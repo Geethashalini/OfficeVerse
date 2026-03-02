@@ -1,0 +1,218 @@
+[
+  {
+    "id": "pol001",
+    "title": "Leave & Attendance Policy",
+    "category": "Leave Management",
+    "categoryIcon": "🏖️",
+    "categoryColor": "#3b82f6",
+    "description": "Comprehensive guide covering all types of leaves, attendance expectations, and time-off procedures.",
+    "lastUpdated": "2025-12-01",
+    "version": "v3.2",
+    "readTime": "8 min",
+    "tags": ["leave", "attendance", "WFH", "holiday"],
+    "popular": true,
+    "content": {
+      "sections": [
+        {
+          "heading": "Annual Leave",
+          "body": "Every employee is entitled to 18 days of paid annual leave per year. Leave must be applied at least 3 days in advance. Unused leave can be carried forward up to 10 days to the next year."
+        },
+        {
+          "heading": "Sick Leave",
+          "body": "Employees are entitled to 12 days of paid sick leave per year. Medical certificate required for absences exceeding 3 consecutive days. Sick leave cannot be carried forward."
+        },
+        {
+          "heading": "Work From Home",
+          "body": "Employees may work from home up to 3 days per week with manager approval. Core hours of 10 AM - 4 PM IST must be maintained. WFH requests should be submitted 24 hours in advance."
+        },
+        {
+          "heading": "Public Holidays",
+          "body": "The company observes 12 public holidays per year as declared by the government. A holiday list will be shared at the beginning of each year."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol002",
+    "title": "Code of Conduct",
+    "category": "Ethics & Compliance",
+    "categoryIcon": "⚖️",
+    "categoryColor": "#6366f1",
+    "description": "Our workplace values, ethical standards, and professional behavior expectations for all employees.",
+    "lastUpdated": "2025-11-15",
+    "version": "v2.0",
+    "readTime": "12 min",
+    "tags": ["ethics", "conduct", "professionalism", "respect"],
+    "popular": true,
+    "content": {
+      "sections": [
+        {
+          "heading": "Core Values",
+          "body": "We are committed to integrity, respect, and excellence in all we do. Every employee is expected to treat colleagues, clients, and partners with dignity and professionalism."
+        },
+        {
+          "heading": "Conflict of Interest",
+          "body": "Employees must disclose any potential conflicts of interest to their manager and HR. This includes outside employment, personal relationships with vendors, or financial interests in competing companies."
+        },
+        {
+          "heading": "Zero Tolerance",
+          "body": "The company has zero tolerance for harassment, discrimination, bullying, or any form of misconduct. Violations are subject to immediate disciplinary action including termination."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol003",
+    "title": "Performance Review Process",
+    "category": "Performance",
+    "categoryIcon": "📊",
+    "categoryColor": "#10b981",
+    "description": "Understand the bi-annual performance review cycle, goal setting framework, and career growth paths.",
+    "lastUpdated": "2026-01-10",
+    "version": "v2.5",
+    "readTime": "10 min",
+    "tags": ["performance", "review", "goals", "OKR", "promotion"],
+    "popular": true,
+    "content": {
+      "sections": [
+        {
+          "heading": "Review Cycle",
+          "body": "Performance reviews are conducted bi-annually in June and December. Mid-year reviews focus on progress and course correction. Year-end reviews determine ratings and compensation adjustments."
+        },
+        {
+          "heading": "Rating Scale",
+          "body": "Employees are rated on a 5-point scale: Exceeds Expectations (5), Meets All Expectations (4), Meets Most Expectations (3), Needs Improvement (2), Unsatisfactory (1)."
+        },
+        {
+          "heading": "Goal Setting",
+          "body": "Goals are set using the OKR (Objectives and Key Results) framework at the beginning of each half. Goals must be SMART and aligned with team and company objectives."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol004",
+    "title": "IT Security & Data Protection",
+    "category": "IT & Security",
+    "categoryIcon": "🔒",
+    "categoryColor": "#ef4444",
+    "description": "Guidelines on data security, acceptable use of company systems, BYOD policy, and data privacy regulations.",
+    "lastUpdated": "2025-10-20",
+    "version": "v4.1",
+    "readTime": "15 min",
+    "tags": ["security", "data", "privacy", "BYOD", "password"],
+    "popular": false,
+    "content": {
+      "sections": [
+        {
+          "heading": "Password Policy",
+          "body": "Passwords must be at least 12 characters with a mix of uppercase, lowercase, numbers, and symbols. Passwords must be changed every 90 days. Two-factor authentication is mandatory for all systems."
+        },
+        {
+          "heading": "Data Classification",
+          "body": "Company data is classified as Public, Internal, Confidential, or Restricted. Employees must handle data according to its classification and never share confidential data via unauthorized channels."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol005",
+    "title": "Travel & Expense Policy",
+    "category": "Finance",
+    "categoryIcon": "✈️",
+    "categoryColor": "#f59e0b",
+    "description": "Business travel guidelines, expense reimbursement process, per diem rates, and approval workflows.",
+    "lastUpdated": "2025-09-05",
+    "version": "v1.8",
+    "readTime": "7 min",
+    "tags": ["travel", "expense", "reimbursement", "per diem"],
+    "popular": false,
+    "content": {
+      "sections": [
+        {
+          "heading": "Travel Approval",
+          "body": "All business travel must be pre-approved by the department head. Travel requests must be submitted at least 5 business days in advance for domestic and 10 days for international travel."
+        },
+        {
+          "heading": "Per Diem Rates",
+          "body": "Domestic: ₹2,500/day for metro cities, ₹1,800/day for other cities. International: As per the approved country-specific rates. Meals exceeding the per diem require additional approval."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol006",
+    "title": "Learning & Development Policy",
+    "category": "Growth & Learning",
+    "categoryIcon": "📚",
+    "categoryColor": "#8b5cf6",
+    "description": "Training allowances, certification reimbursements, mentorship programs, and continuous learning initiatives.",
+    "lastUpdated": "2026-01-20",
+    "version": "v2.1",
+    "readTime": "6 min",
+    "tags": ["learning", "training", "certification", "development", "upskilling"],
+    "popular": true,
+    "content": {
+      "sections": [
+        {
+          "heading": "Training Budget",
+          "body": "Each employee receives an annual L&D budget of ₹50,000 for courses, certifications, conferences, and books. Unused budget does not carry forward. Requests must be submitted 2 weeks in advance."
+        },
+        {
+          "heading": "Certification Support",
+          "body": "The company reimburses 100% of certification costs for role-relevant certifications. For general certifications, 75% reimbursement is provided upon passing. Employees must commit to 1 year of service post-reimbursement."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol007",
+    "title": "Employee Benefits & Perks",
+    "category": "Benefits",
+    "categoryIcon": "🎁",
+    "categoryColor": "#ec4899",
+    "description": "Health insurance, wellness programs, meal benefits, gym allowances, and other employee perks.",
+    "lastUpdated": "2026-02-01",
+    "version": "v3.0",
+    "readTime": "9 min",
+    "tags": ["benefits", "health", "insurance", "wellness", "perks"],
+    "popular": true,
+    "content": {
+      "sections": [
+        {
+          "heading": "Health Insurance",
+          "body": "All employees receive comprehensive health insurance coverage of ₹5,00,000 per annum covering self, spouse, and up to 2 children. Parents can be added at a subsidized premium of 20%."
+        },
+        {
+          "heading": "Wellness Benefits",
+          "body": "Monthly wellness allowance of ₹2,000 for gym, yoga, meditation apps, or fitness equipment. Annual health check-up is fully covered and mandatory for all employees."
+        }
+      ]
+    }
+  },
+  {
+    "id": "pol008",
+    "title": "Anti-Harassment Policy",
+    "category": "Ethics & Compliance",
+    "categoryIcon": "🤝",
+    "categoryColor": "#6366f1",
+    "description": "POSH guidelines, reporting mechanisms, investigation process, and our commitment to a safe workplace.",
+    "lastUpdated": "2025-08-15",
+    "version": "v2.3",
+    "readTime": "11 min",
+    "tags": ["POSH", "harassment", "safety", "reporting", "diversity"],
+    "popular": false,
+    "content": {
+      "sections": [
+        {
+          "heading": "What Constitutes Harassment",
+          "body": "Any unwelcome conduct based on gender, race, religion, caste, disability, sexual orientation, or any other protected characteristic that creates a hostile work environment."
+        },
+        {
+          "heading": "Reporting",
+          "body": "Report harassment to HR, the Internal Committee, or via our anonymous reporting portal. All complaints are treated with strict confidentiality. Retaliation against complainants is strictly prohibited."
+        }
+      ]
+    }
+  }
+]

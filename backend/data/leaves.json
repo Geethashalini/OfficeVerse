@@ -1,0 +1,67 @@
+[
+  {
+    "id": "lv001",
+    "employeeId": "emp001",
+    "employeeName": "Arjun Sharma",
+    "type": "Annual Leave",
+    "from": "2026-03-10",
+    "to": "2026-03-12",
+    "days": 3,
+    "reason": "Family vacation",
+    "status": "approved",
+    "appliedOn": "2026-02-28",
+    "approvedBy": "Priya Menon"
+  },
+  {
+    "id": "lv002",
+    "employeeId": "emp003",
+    "employeeName": "Sneha Kapoor",
+    "type": "Sick Leave",
+    "from": "2026-03-04",
+    "to": "2026-03-05",
+    "days": 2,
+    "reason": "Not feeling well",
+    "status": "approved",
+    "appliedOn": "2026-03-03",
+    "approvedBy": "Ravi Kumar"
+  },
+  {
+    "id": "lv003",
+    "employeeId": "emp008",
+    "employeeName": "Karan Malhotra",
+    "type": "Annual Leave",
+    "from": "2026-03-25",
+    "to": "2026-03-28",
+    "days": 4,
+    "reason": "Personal work",
+    "status": "pending",
+    "appliedOn": "2026-03-01",
+    "approvedBy": null
+  },
+  {
+    "id": "lv004",
+    "employeeId": "emp005",
+    "employeeName": "Ananya Iyer",
+    "type": "WFH",
+    "from": "2026-03-06",
+    "to": "2026-03-06",
+    "days": 1,
+    "reason": "Home maintenance",
+    "status": "approved",
+    "appliedOn": "2026-03-02",
+    "approvedBy": "Vikram Singh"
+  },
+  {
+    "id": "lv005",
+    "employeeId": "emp009",
+    "employeeName": "Divya Reddy",
+    "type": "Annual Leave",
+    "from": "2026-03-18",
+    "to": "2026-03-20",
+    "days": 3,
+    "reason": "Wedding anniversary trip",
+    "status": "approved",
+    "appliedOn": "2026-02-25",
+    "approvedBy": "CMO"
+  }
+]

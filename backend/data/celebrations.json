@@ -1,0 +1,176 @@
+{
+  "birthdays": [
+    {
+      "id": "bday001",
+      "employeeId": "emp010",
+      "employeeName": "Rahul Joshi",
+      "avatar": "RJ",
+      "coverColor": "#ef4444",
+      "department": "Engineering",
+      "role": "Full Stack Developer",
+      "date": "2026-03-15",
+      "age": 28,
+      "message": "Here's to another year of amazing code and great vibes! 🎂"
+    },
+    {
+      "id": "bday002",
+      "employeeId": "emp007",
+      "employeeName": "Meera Nair",
+      "avatar": "MN",
+      "coverColor": "#f97316",
+      "department": "Human Resources",
+      "role": "HR Business Partner",
+      "date": "2026-03-30",
+      "age": 35,
+      "message": "Thank you for making every day at work feel special! 🎉"
+    },
+    {
+      "id": "bday003",
+      "employeeId": "emp002",
+      "employeeName": "Priya Menon",
+      "avatar": "PM",
+      "coverColor": "#8b5cf6",
+      "department": "Engineering",
+      "role": "Engineering Manager",
+      "date": "2026-03-10",
+      "age": 37,
+      "message": "Happy Birthday to our amazing Engineering Manager! 🎊"
+    },
+    {
+      "id": "bday004",
+      "employeeId": "emp005",
+      "employeeName": "Ananya Iyer",
+      "avatar": "AI",
+      "coverColor": "#10b981",
+      "department": "Analytics",
+      "role": "Data Scientist",
+      "date": "2026-02-28",
+      "age": 29,
+      "message": "May your day be as extraordinary as your algorithms! 🚀"
+    },
+    {
+      "id": "bday005",
+      "employeeId": "emp009",
+      "employeeName": "Divya Reddy",
+      "avatar": "DR",
+      "coverColor": "#a855f7",
+      "department": "Marketing",
+      "role": "Marketing Manager",
+      "date": "2026-08-23",
+      "age": 31,
+      "message": "Wishing you a day as vibrant as your campaigns! 🎈"
+    },
+    {
+      "id": "bday006",
+      "employeeId": "emp008",
+      "employeeName": "Karan Malhotra",
+      "avatar": "KM",
+      "coverColor": "#14b8a6",
+      "department": "Engineering",
+      "role": "DevOps Engineer",
+      "date": "2026-04-07",
+      "age": 32,
+      "message": "May your deployments be smooth and your day be perfect! 🎂"
+    },
+    {
+      "id": "bday007",
+      "employeeId": "emp003",
+      "employeeName": "Sneha Kapoor",
+      "avatar": "SK",
+      "coverColor": "#ec4899",
+      "department": "Design",
+      "role": "UX Designer",
+      "date": "2026-11-05",
+      "age": 30,
+      "message": "Designing wonderful memories on your special day! 🎨"
+    }
+  ],
+  "workAnniversaries": [
+    {
+      "id": "ann001",
+      "employeeId": "emp006",
+      "employeeName": "Vikram Singh",
+      "avatar": "VS",
+      "coverColor": "#3b82f6",
+      "department": "Product",
+      "role": "VP of Product",
+      "date": "2026-03-17",
+      "years": 8,
+      "message": "8 incredible years of product leadership! Thank you for shaping our vision. 🏆"
+    },
+    {
+      "id": "ann002",
+      "employeeId": "emp001",
+      "employeeName": "Arjun Sharma",
+      "avatar": "AS",
+      "coverColor": "#6366f1",
+      "department": "Engineering",
+      "role": "Senior Software Engineer",
+      "date": "2026-03-15",
+      "years": 5,
+      "message": "5 years of coding excellence! The architecture wouldn't be the same without you. 🚀"
+    },
+    {
+      "id": "ann003",
+      "employeeId": "emp007",
+      "employeeName": "Meera Nair",
+      "avatar": "MN",
+      "coverColor": "#f97316",
+      "department": "Human Resources",
+      "role": "HR Business Partner",
+      "date": "2026-04-01",
+      "years": 6,
+      "message": "6 years of making our workplace amazing! Culture champion! ❤️"
+    },
+    {
+      "id": "ann004",
+      "employeeId": "emp008",
+      "employeeName": "Karan Malhotra",
+      "avatar": "KM",
+      "coverColor": "#14b8a6",
+      "department": "Engineering",
+      "role": "DevOps Engineer",
+      "date": "2026-09-20",
+      "years": 5,
+      "message": "5 years of keeping our systems up and running! Infrastructure hero! 🛡️"
+    },
+    {
+      "id": "ann005",
+      "employeeId": "emp005",
+      "employeeName": "Ananya Iyer",
+      "avatar": "AI",
+      "coverColor": "#10b981",
+      "department": "Analytics",
+      "role": "Data Scientist",
+      "date": "2026-06-15",
+      "years": 4,
+      "message": "4 years of turning data into insights! Data wizard! 📊"
+    }
+  ],
+  "promotions": [
+    {
+      "id": "promo001",
+      "employeeId": "emp001",
+      "employeeName": "Arjun Sharma",
+      "avatar": "AS",
+      "coverColor": "#6366f1",
+      "department": "Engineering",
+      "oldRole": "Software Engineer",
+      "newRole": "Senior Software Engineer",
+      "date": "2026-02-01",
+      "message": "Congratulations on a well-deserved promotion! Keep soaring! 🚀"
+    },
+    {
+      "id": "promo002",
+      "employeeId": "emp005",
+      "employeeName": "Ananya Iyer",
+      "avatar": "AI",
+      "coverColor": "#10b981",
+      "department": "Analytics",
+      "oldRole": "Junior Data Scientist",
+      "newRole": "Data Scientist",
+      "date": "2026-01-15",
+      "message": "From junior to mid-level - the data world is yours! 📈"
+    }
+  ]
+}
