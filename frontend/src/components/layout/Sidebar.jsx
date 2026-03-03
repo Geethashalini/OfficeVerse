@@ -3,10 +3,12 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, Trophy, PartyPopper, BookOpen,
   Megaphone, Heart, Users, MessageSquare, BarChart3,
-  CalendarCheck, Zap, ChevronRight, Sparkles, Activity, MapPin, Briefcase, Map
+  CalendarCheck, Zap, ChevronRight, Sparkles, Activity, MapPin, Briefcase, Map, Shield, Gamepad2
 } from 'lucide-react';
 import Avatar from '../common/Avatar';
 import ProfileMenu from '../common/ProfileMenu';
+import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const navItems = [
   { path: '/',             icon: LayoutDashboard, label: 'Dashboard',    exact: true, color: '#6366f1' },
@@ -22,6 +24,7 @@ const navItems = [
   { path: '/pulse',        icon: Activity,         label: 'Team Pulse',   badge: '🔥', color: '#818cf8' },
   { path: '/whos-in',      icon: MapPin,           label: "Who's In?",    color: '#10b981' },
   { path: '/projects',     icon: Briefcase,        label: 'Projects',     color: '#a78bfa' },
+  { path: '/fun-friday',   icon: Gamepad2,         label: 'Fun Friday',   color: '#ec4899', badge: '🎮' },
   { path: '/journey',      icon: Map,              label: 'Journey',      color: '#f472b6' },
   { path: '/ask-hr',       icon: MessageSquare,    label: 'Ask HR',       badge: 'AI', color: '#34d399' },
 ];
@@ -54,6 +57,19 @@ export default function Sidebar({ isOpen, onClose }) {
   const [expanded, setExpanded] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
   const hoverTimeout = useRef(null);
+  const { user } = useAuth();
+  const { isDark } = useTheme();
+  const isAdmin = user?.keycloakRoles?.includes('hr-admin');
+  const userInitials = user?.avatar || user?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U';
+  const userColor = user?.color || '#6366f1';
+  const textMuted   = isDark ? 'rgba(255,255,255,0.4)' : '#9333ea';
+  const textPrimary = isDark ? 'rgba(255,255,255,0.85)' : '#1e0a2e';
+  const textAccent  = isDark ? 'rgba(139,92,246,0.7)'   : '#ec4899';
+
+  // Dynamically add admin link for hr-admin users
+  const items = isAdmin
+    ? [...navItems, { path: '/admin', icon: Shield, label: 'HR Admin', color: '#f97316', badge: 'Admin' }]
+    : navItems;
 
   const handleMouseEnter = () => {
     clearTimeout(hoverTimeout.current);
@@ -86,15 +102,15 @@ export default function Sidebar({ isOpen, onClose }) {
         style={{
           width: `${w}px`,
           transition: 'width 0.28s cubic-bezier(0.16,1,0.3,1), transform 0.3s ease',
-          background: 'linear-gradient(180deg, #0c0a1e 0%, #0a0818 100%)',
-          borderRight: '1px solid rgba(255,255,255,0.05)',
+          background: 'var(--sidebar-bg)',
+          borderRight: '1px solid var(--border-default)',
           overflow: 'hidden',
           willChange: 'width',
         }}
       >
         {/* ── Logo ────────────────────────────────────────── */}
-        <div className="flex items-center border-b border-white/5 flex-shrink-0"
-          style={{ padding: '14px 14px', height: 65, gap: 12, overflow: 'hidden' }}>
+        <div className="flex items-center flex-shrink-0"
+          style={{ padding: '14px 14px', height: 65, gap: 12, overflow: 'hidden', borderBottom: '1px solid var(--border-default)', background: 'var(--bg-surface)' }}>
 
           {/* Logo mark — orbit rings + core dot — also acts as tooltip when collapsed */}
           <div className="relative flex-shrink-0 group/logo" style={{ width: 36, height: 36, minWidth: 36 }}>
@@ -172,7 +188,7 @@ export default function Sidebar({ isOpen, onClose }) {
         <nav className="flex-1 py-3 space-y-0.5 overflow-y-auto overflow-x-hidden"
           style={{ padding: '12px 8px' }}>
 
-          {navItems.map(({ path, icon: Icon, label, badge, exact, color }) => (
+          {items.map(({ path, icon: Icon, label, badge, exact, color }) => (
             <NavLink
               key={path}
               to={path}
@@ -183,11 +199,12 @@ export default function Sidebar({ isOpen, onClose }) {
               className={({ isActive }) => `
                 relative flex items-center rounded-2xl text-sm font-medium
                 transition-colors duration-150 group
-                ${isActive ? '' : 'text-white/40 hover:text-white/80'}
+                ${isActive ? '' : ''}
               `}
               style={({ isActive }) => ({
                 padding: '10px',
                 gap: 10,
+                color: isActive ? 'white' : textMuted,
                 background: isActive
                   ? `linear-gradient(135deg, ${color}20, ${color}0a)`
                   : 'transparent',
@@ -263,8 +280,10 @@ export default function Sidebar({ isOpen, onClose }) {
               whiteSpace: 'nowrap', overflow: 'hidden', flex: 1,
               pointerEvents: 'none',
             }}>
-              <p className="text-white/85 text-sm font-semibold">Arjun Sharma</p>
-              <p className="text-xs" style={{ color: 'rgba(139,92,246,0.7)' }}>Sr. Engineer · 1,250 pts</p>
+              <p className="text-sm font-semibold" style={{ color: textPrimary }}>{user?.name || 'User'}</p>
+              <p className="text-xs" style={{ color: textAccent }}>
+                {user?.role?.split(' ').slice(0, 2).join(' ') || 'Employee'} · {(user?.points || 0).toLocaleString()} pts
+              </p>
             </div>
 
             <Sparkles size={13} style={{

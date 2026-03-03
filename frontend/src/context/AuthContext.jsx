@@ -15,6 +15,7 @@ const MOCK_USERS = [
     photo: 'https://randomuser.me/api/portraits/men/32.jpg',
     color: '#6366f1',
     points: 1250,
+    birthday: '1993-03-04',
     keycloakRoles: ['employee', 'developer'],
   },
   {
@@ -29,6 +30,7 @@ const MOCK_USERS = [
     photo: 'https://randomuser.me/api/portraits/women/44.jpg',
     color: '#8b5cf6',
     points: 2100,
+    birthday: '1989-03-03',
     keycloakRoles: ['employee', 'manager', 'hr-viewer'],
   },
   {
@@ -43,6 +45,7 @@ const MOCK_USERS = [
     photo: 'https://randomuser.me/api/portraits/women/33.jpg',
     color: '#f97316',
     points: 1540,
+    birthday: '1991-12-30',
     keycloakRoles: ['employee', 'hr-admin'],
   },
 ];

@@ -420,16 +420,11 @@ function BirthdayCard({ person, index, onCelebrate, onBurst }) {
           </div>
         </div>
 
-        {/* Age milestone */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-            <div className="h-full rounded-full transition-all duration-1000"
-              style={{ width: `${(person.age % 10) * 10}%`, background: `linear-gradient(90deg, ${person.coverColor}, #ec4899)` }} />
-          </div>
-          <span className="text-white font-black text-sm" style={{ color: person.coverColor }}>
-            {person.age}
-          </span>
-          <span className="text-white/30 text-xs">yrs</span>
+        {/* Age display - clean, no confusing bar */}
+        <div className="flex items-center gap-2 mb-4 px-1">
+          <span className="text-white/30 text-xs">Turning</span>
+          <span className="font-black text-base" style={{ color: person.coverColor }}>{person.age}</span>
+          <span className="text-white/30 text-xs">years old 🎂</span>
         </div>
 
         {/* Message */}

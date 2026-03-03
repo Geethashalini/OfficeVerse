@@ -11,6 +11,7 @@ import { achievementsAPI, celebrationsAPI, announcementsAPI, kudosAPI, analytics
 import { format, parseISO } from 'date-fns';
 import Avatar from '../components/common/Avatar';
 import { useAuth } from '../context/AuthContext';
+import BirthdayCountdownCard from '../components/common/BirthdayCountdown';
 
 /* ── Spring configs ────────────────────────────────────────── */
 const SPRING_SOFT   = { type: 'spring', stiffness: 80,  damping: 20, mass: 1 };
@@ -384,7 +385,7 @@ export default function Dashboard() {
   const hour = now.getHours();
   const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
   const greetEmoji = hour < 12 ? '🌤️' : hour < 17 ? '☀️' : '🌙';
-  const displayName = user?.name?.split(' ')[0] || 'Arjun';
+  const displayName = user?.name?.split(' ')[0] || 'there';
 
   if (loading) {
     return (
@@ -509,6 +510,9 @@ export default function Dashboard() {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* ── Birthday Countdown (only within 24h) ─────────── */}
+      <BirthdayCountdownCard user={user} />
 
       {/* ── Stat Cards ────────────────────────────────────── */}
       {analytics && (

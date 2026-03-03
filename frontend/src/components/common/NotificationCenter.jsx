@@ -226,7 +226,7 @@ export default function NotificationCenter() {
             top: panelPos.top,
             right: panelPos.right,
             zIndex: 99999,
-            background: 'rgb(10, 8, 28)',          /* fully opaque — nothing bleeds through */
+            background: 'var(--bg-surface)',          /* fully opaque — nothing bleeds through */
             border: '1px solid rgba(255,255,255,0.12)',
             borderRadius: '20px',
             boxShadow: '0 24px 80px rgba(0,0,0,0.85), 0 0 0 1px rgba(99,102,241,0.15)',

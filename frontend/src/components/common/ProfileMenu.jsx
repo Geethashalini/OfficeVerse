@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import {
   User, Trophy, Heart, CalendarCheck, Settings,
   LogOut, ChevronRight, Star, Zap, Shield,
@@ -45,7 +46,7 @@ function SettingsModal({ onClose }) {
       style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)' }}
       onClick={onClose}>
       <div className="w-full max-w-sm animate-scale-in"
-        style={{ background: 'rgba(10,8,24,0.98)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, boxShadow: '0 32px 80px rgba(0,0,0,0.8)', overflow: 'hidden' }}
+        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-default)', borderRadius: 20, boxShadow: '0 32px 80px rgba(0,0,0,0.8)', overflow: 'hidden' }}
         onClick={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
@@ -124,7 +125,7 @@ function PrivacyModal({ onClose }) {
       style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)' }}
       onClick={onClose}>
       <div className="w-full max-w-sm animate-scale-in"
-        style={{ background: 'rgba(10,8,24,0.98)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, boxShadow: '0 32px 80px rgba(0,0,0,0.8)', overflow: 'hidden' }}
+        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-default)', borderRadius: 20, boxShadow: '0 32px 80px rgba(0,0,0,0.8)', overflow: 'hidden' }}
         onClick={e => e.stopPropagation()}>
 
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
@@ -182,7 +183,7 @@ function SignOutModal({ onClose, onConfirm }) {
       style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)' }}
       onClick={onClose}>
       <div className="w-full max-w-xs animate-scale-in text-center"
-        style={{ background: 'rgba(10,8,24,0.98)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: 28, boxShadow: '0 32px 80px rgba(0,0,0,0.8)' }}
+        style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-default)', borderRadius: 20, padding: 28, boxShadow: '0 32px 80px rgba(0,0,0,0.8)' }}
         onClick={e => e.stopPropagation()}>
         <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
           style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.25)' }}>
@@ -195,7 +196,7 @@ function SignOutModal({ onClose, onConfirm }) {
         <div className="flex gap-3">
           <button onClick={onClose}
             className="flex-1 py-2.5 rounded-xl text-sm font-semibold"
-            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.6)', border: '1px solid var(--border-default)' }}>
             Stay
           </button>
           <button onClick={onConfirm}
@@ -221,7 +222,22 @@ export default function ProfileMenu({ anchor = 'top' }) {
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+
+  // Dynamic user data from auth session
+  const u = {
+    name:   user?.name  || 'User',
+    role:   user?.role  || '',
+    dept:   user?.department || '',
+    email:  user?.email || '',
+    photo:  user?.photo || '',
+    avatar: user?.avatar || user?.name?.split(' ').map(n => n[0]).join('').slice(0,2) || 'U',
+    color:  user?.color || '#6366f1',
+    id:     user?.id    || 'emp001',
+    points: user?.points || 0,
+    roles:  user?.keycloakRoles || [],
+    isAdmin: user?.keycloakRoles?.includes('hr-admin'),
+  };
 
   const computePos = () => {
     if (!triggerRef.current) return;
@@ -257,7 +273,7 @@ export default function ProfileMenu({ anchor = 'top' }) {
   }, [open]);
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('arjun.sharma@company.com');
+    navigator.clipboard.writeText(u.email);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -267,19 +283,22 @@ export default function ProfileMenu({ anchor = 'top' }) {
     setOpen(false);
     switch (action) {
       case 'my-profile':
-        navigate('/directory', { state: { openProfile: 'emp001' } });
+        navigate('/directory', { state: { openProfile: u.id } });
         break;
       case 'my-achievements':
-        navigate('/spotlight', { state: { filterEmployee: 'emp001', employeeName: 'Arjun Sharma' } });
+        navigate('/spotlight', { state: { filterEmployee: u.id, employeeName: u.name } });
         break;
       case 'my-kudos':
-        navigate('/kudos', { state: { filterTo: 'emp001' } });
+        navigate('/kudos', { state: { filterTo: u.id } });
         break;
       case 'my-leaves':
         navigate('/leaves');
         break;
       case 'my-journey':
         navigate('/journey');
+        break;
+      case 'admin':
+        navigate('/admin');
         break;
       case 'notifications':
         navigate('/announcements');
@@ -307,6 +326,7 @@ export default function ProfileMenu({ anchor = 'top' }) {
         { icon: Trophy,        label: 'My Achievements', sub: '2 awards earned',              color: '#f59e0b', action: 'my-achievements' },
         { icon: Heart,         label: 'Kudos Received',  sub: '3 kudos this month',           color: '#ec4899', action: 'my-kudos' },
         { icon: CalendarCheck, label: 'My Leaves',       sub: '15 days remaining',            color: '#10b981', action: 'my-leaves' },
+        ...(u.isAdmin ? [{ icon: Shield, label: 'HR Admin Portal', sub: 'Manage HR operations', color: '#f97316', action: 'admin' }] : []),
       ],
     },
     {
@@ -321,8 +341,8 @@ export default function ProfileMenu({ anchor = 'top' }) {
   const dropdown = open && createPortal(
     <div ref={menuRef} className="animate-scale-in"
       style={{ position: 'fixed', top: menuPos.top, left: menuPos.left, width: 300, zIndex: 9999,
-        background: 'rgba(10,8,24,0.98)', backdropFilter: 'blur(24px)',
-        border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20,
+        background: 'var(--bg-surface)', backdropFilter: 'blur(24px)',
+        border: '1px solid var(--border-default)', borderRadius: 20,
         boxShadow: '0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(99,102,241,0.1)', overflow: 'hidden' }}>
 
       {/* Profile Header */}
@@ -330,21 +350,22 @@ export default function ProfileMenu({ anchor = 'top' }) {
         style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.08))' }}>
         <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.2), transparent)', filter: 'blur(20px)' }} />
-        <div className="relative z-10 flex items-start gap-3">
-          <Avatar photo="https://randomuser.me/api/portraits/men/32.jpg" initials="AS" color="#6366f1" size="lg" online ring />
-          <div className="flex-1 min-w-0">
-            <p className="text-white font-black text-base leading-tight">Arjun Sharma</p>
-            <p className="text-white/50 text-xs mt-0.5">Senior Software Engineer</p>
-            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-              <span className="badge text-[10px] font-bold" style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.25)' }}>● Active</span>
-              <span className="badge text-[10px] font-bold" style={{ background: 'rgba(99,102,241,0.15)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.2)' }}>Engineering</span>
+          <div className="relative z-10 flex items-start gap-3">
+            <Avatar photo={u.photo} initials={u.avatar} color={u.color} size="lg" online ring />
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-black text-base leading-tight">{u.name}</p>
+              <p className="text-white/50 text-xs mt-0.5">{u.role}</p>
+              <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                <span className="badge text-[10px] font-bold" style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.25)' }}>● Active</span>
+                <span className="badge text-[10px] font-bold" style={{ background: `${u.color}15`, color: u.color, border: `1px solid ${u.color}20` }}>{u.dept}</span>
+                {u.isAdmin && <span className="badge text-[10px] font-black" style={{ background: 'rgba(249,115,22,0.15)', color: '#fb923c', border: '1px solid rgba(249,115,22,0.3)' }}>hr-admin</span>}
+              </div>
+              <button onClick={handleCopyEmail} className="flex items-center gap-1 mt-1.5 text-white/30 hover:text-white/60 transition-colors group">
+                <span className="text-[11px] truncate">{u.email}</span>
+                {copied ? <Check size={11} className="text-emerald-400 flex-shrink-0" /> : <Copy size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />}
+              </button>
             </div>
-            <button onClick={handleCopyEmail} className="flex items-center gap-1 mt-1.5 text-white/30 hover:text-white/60 transition-colors group">
-              <span className="text-[11px] truncate">arjun.sharma@company.com</span>
-              {copied ? <Check size={11} className="text-emerald-400 flex-shrink-0" /> : <Copy size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />}
-            </button>
           </div>
-        </div>
         {/* Stats */}
         <div className="grid grid-cols-4 gap-2 mt-4 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           {STATS.map(({ label, value, color }) => (
@@ -407,7 +428,7 @@ export default function ProfileMenu({ anchor = 'top' }) {
       <button ref={triggerRef} onClick={handleOpen}
         className="transition-all hover:scale-105 active:scale-95 block"
         style={{ borderRadius: anchor === 'top' ? '10px' : '12px' }}>
-        <Avatar photo="https://randomuser.me/api/portraits/men/32.jpg" initials="AS" color="#6366f1" size="sm" online />
+        <Avatar photo={u.photo} initials={u.avatar} color={u.color} size="sm" online />
       </button>
       {dropdown}
       {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}

@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen relative overflow-x-hidden" style={{ background: '#080714' }}>
+    <div className="flex min-h-screen relative overflow-x-hidden" style={{ background: 'var(--bg-base)' }}>
       {/* Background Orbs */}
       <div className="bg-orb bg-orb-1" />
       <div className="bg-orb bg-orb-2" />

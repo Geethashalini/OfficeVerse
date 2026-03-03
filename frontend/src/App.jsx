@@ -17,6 +17,8 @@ import WhosIn from './pages/WhosIn';
 import Projects from './pages/Projects';
 import Journey from './pages/Journey';
 import AskHR from './pages/AskHR';
+import Admin from './pages/Admin';
+import FunFriday from './pages/FunFriday';
 
 export default function App() {
   return (
@@ -44,6 +46,8 @@ export default function App() {
               <Route path="/projects"      element={<Projects />} />
               <Route path="/journey"       element={<Journey />} />
               <Route path="/ask-hr"        element={<AskHR />} />
+              <Route path="/admin"         element={<Admin />} />
+              <Route path="/fun-friday"    element={<FunFriday />} />
             </Routes>
           </Layout>
         </ProtectedRoute>

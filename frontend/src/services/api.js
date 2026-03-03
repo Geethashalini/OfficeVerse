@@ -81,4 +81,19 @@ export const journeysAPI = {
   getByEmployee: (id) => api.get(`/journeys/${id}`),
 };
 
+export const fridayAPI = {
+  // Suggestions
+  getSuggestions: (params) => api.get('/friday/suggestions', { params }),
+  submitSuggestion: (data) => api.post('/friday/suggestions', data),
+  updateSuggestion: (id, data) => api.patch(`/friday/suggestions/${id}`, data),
+  deleteSuggestion: (id) => api.delete(`/friday/suggestions/${id}`),
+  // Polls
+  getPolls: (params) => api.get('/friday/polls', { params }),
+  getActivePoll: () => api.get('/friday/polls/active'),
+  createPoll: (data) => api.post('/friday/polls', data),
+  vote: (pollId, data) => api.post(`/friday/polls/${pollId}/vote`, data),
+  updatePoll: (id, data) => api.patch(`/friday/polls/${id}`, data),
+  deletePoll: (id) => api.delete(`/friday/polls/${id}`),
+};
+
 export default api;
