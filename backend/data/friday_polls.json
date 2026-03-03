@@ -1,0 +1,134 @@
+[
+  {
+    "id": "poll002",
+    "title": "Fun Friday — March 7, 2026 🎉",
+    "games": [
+      {
+        "suggestionId": "sug001",
+        "title": "Office Scavenger Hunt",
+        "emoji": "🔍",
+        "votes": 7
+      },
+      {
+        "suggestionId": "sug002",
+        "title": "Tech Trivia Night",
+        "emoji": "🧠",
+        "votes": 5
+      },
+      {
+        "suggestionId": "sug003",
+        "title": "Pictionary Tournament",
+        "emoji": "🎨",
+        "votes": 4
+      },
+      {
+        "suggestionId": "sug004",
+        "title": "Online Skribbl.io Battle",
+        "emoji": "💻",
+        "votes": 2
+      }
+    ],
+    "startDate": "2026-03-03",
+    "endDate": "2026-03-06",
+    "status": "active",
+    "winner": null,
+    "totalVotes": 18,
+    "voters": [
+      "emp002",
+      "emp003",
+      "emp004",
+      "emp005",
+      "emp006",
+      "emp007",
+      "emp008",
+      "emp009",
+      "emp001"
+    ]
+  },
+  {
+    "id": "poll001",
+    "title": "Fun Friday — Feb 28, 2026 🎮",
+    "games": [
+      {
+        "suggestionId": "sug004",
+        "title": "Online Skribbl.io Battle",
+        "emoji": "💻",
+        "votes": 8
+      },
+      {
+        "suggestionId": "sug003",
+        "title": "Pictionary Tournament",
+        "emoji": "🎨",
+        "votes": 5
+      },
+      {
+        "suggestionId": "sug001",
+        "title": "Office Scavenger Hunt",
+        "emoji": "🔍",
+        "votes": 4
+      }
+    ],
+    "startDate": "2026-02-24",
+    "endDate": "2026-02-27",
+    "status": "archived",
+    "winner": {
+      "suggestionId": "sug004",
+      "title": "Online Skribbl.io Battle",
+      "emoji": "💻",
+      "votes": 8
+    },
+    "totalVotes": 17,
+    "voters": [
+      "emp001",
+      "emp002",
+      "emp003",
+      "emp004",
+      "emp005",
+      "emp006",
+      "emp007",
+      "emp008",
+      "emp009",
+      "emp010"
+    ]
+  },
+  {
+    "id": "poll000",
+    "title": "Fun Friday — Feb 21, 2026 🏆",
+    "games": [
+      {
+        "suggestionId": "sug002",
+        "title": "Tech Trivia Night",
+        "emoji": "🧠",
+        "votes": 10
+      },
+      {
+        "suggestionId": "sug001",
+        "title": "Office Scavenger Hunt",
+        "emoji": "🔍",
+        "votes": 6
+      }
+    ],
+    "startDate": "2026-02-17",
+    "endDate": "2026-02-20",
+    "status": "archived",
+    "winner": {
+      "suggestionId": "sug002",
+      "title": "Tech Trivia Night",
+      "emoji": "🧠",
+      "votes": 10
+    },
+    "totalVotes": 16,
+    "voters": [
+      "emp001",
+      "emp002",
+      "emp003",
+      "emp004",
+      "emp005",
+      "emp006",
+      "emp007",
+      "emp008",
+      "emp009",
+      "emp010"
+    ]
+  }
+]

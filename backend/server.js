@@ -14,6 +14,7 @@ const analyticsRouter = require('./routes/analytics');
 const pulseRouter = require('./routes/pulse');
 const projectsRouter = require('./routes/projects');
 const journeysRouter = require('./routes/journeys');
+const fridayRouter   = require('./routes/friday');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,7 @@ app.use('/api/analytics', analyticsRouter);
 app.use('/api/pulse', pulseRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/journeys', journeysRouter);
+app.use('/api/friday',  fridayRouter);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'OfficeVerse API is running', timestamp: new Date().toISOString() });

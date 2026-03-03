@@ -40,4 +40,12 @@ router.post('/:id/like', (req, res) => {
   res.json({ likes: achievements[idx].likes });
 });
 
+router.post('/', (req, res) => {
+  const achievements = readData();
+  const newAch = { ...req.body };
+  achievements.unshift(newAch);
+  writeData(achievements);
+  res.status(201).json(newAch);
+});
+
 module.exports = router;

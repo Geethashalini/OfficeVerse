@@ -9,8 +9,8 @@
     "employeeId": "emp001",
     "days": 1,
     "appliedOn": "2026-03-02",
-    "status": "pending",
-    "approvedBy": null
+    "status": "approved",
+    "approvedBy": "Meera Nair"
   },
   {
     "id": "lv001",
