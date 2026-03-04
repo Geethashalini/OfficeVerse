@@ -4,9 +4,9 @@ import {
   Shield, Megaphone, Trophy, CheckCircle, XCircle,
   MessageSquare, Plus, Send, Eye, Clock, RefreshCw,
   Users, TrendingUp, BarChart3, Zap, ChevronDown, Lock,
-  Gamepad2, Vote, Trash2, Search, Filter, Calendar
+  Gamepad2, Vote, Trash2, Search, Filter, Calendar, UserPlus, Mail, Phone, MapPin, Briefcase
 } from 'lucide-react';
-import { announcementsAPI, leavesAPI, achievementsAPI, feedbackAPI, analyticsAPI, fridayAPI } from '../services/api';
+import { announcementsAPI, leavesAPI, achievementsAPI, feedbackAPI, analyticsAPI, fridayAPI, employeesAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
@@ -462,6 +462,203 @@ function FeedbackPanel() {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+/* ── Panel: Add Employee ───────────────────────────────────── */
+function AddEmployeePanel() {
+  const DEPARTMENTS = ['Engineering', 'Design', 'Product', 'Analytics', 'Marketing', 'Human Resources', 'Finance', 'Operations', 'Sales'];
+  const COVER_COLORS = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#f97316', '#14b8a6', '#ef4444', '#a855f7'];
+
+  const [form, setForm] = useState({
+    name: '', role: '', department: 'Engineering', email: '', phone: '',
+    location: 'Bangalore', joinDate: new Date().toISOString().split('T')[0],
+    bio: '', manager: '', coverColor: '#6366f1',
+  });
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(null);
+
+  const getInitials = (name) => name.trim().split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.role || !form.email) { toast.error('Name, role and email are required'); return; }
+    setLoading(true);
+    try {
+      const avatar = getInitials(form.name);
+      const employee = await employeesAPI.add({
+        ...form,
+        avatar,
+        photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(form.name)}&background=${form.coverColor.slice(1)}&color=fff&size=128`,
+        birthday: '',
+        skills: [],
+        status: 'active',
+        points: 0,
+        yearsAtCompany: 0,
+        achievements: [],
+      });
+      setDone(employee.name);
+      toast.success(`${employee.name} added to the team!`);
+      setTimeout(() => {
+        setDone(null);
+        setForm({ name: '', role: '', department: 'Engineering', email: '', phone: '', location: 'Bangalore', joinDate: new Date().toISOString().split('T')[0], bio: '', manager: '', coverColor: '#6366f1' });
+      }, 3000);
+    } catch { toast.error('Failed to add employee'); }
+    finally { setLoading(false); }
+  };
+
+  return (
+    <div className="glass-card p-6 lg:col-span-2" style={{ border: '1px solid rgba(99,102,241,0.2)' }}>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
+          style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)' }}>
+          <UserPlus size={18} style={{ color: '#818cf8' }} />
+        </div>
+        <div>
+          <h3 className="text-white font-black text-base">Add New Employee</h3>
+          <p className="text-white/35 text-xs">Create a new employee profile in the system</p>
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        {done ? (
+          <motion.div key="success"
+            initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ opacity: 0 }}
+            className="flex flex-col items-center py-10 text-center">
+            <motion.div
+              className="w-20 h-20 rounded-3xl flex items-center justify-center mb-4"
+              style={{ background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}
+              animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 0.5 }}>
+              <CheckCircle size={40} className="text-emerald-400" />
+            </motion.div>
+            <p className="text-white font-black text-lg">{done} added!</p>
+            <p className="text-white/40 text-sm mt-1">Visible in Directory and throughout the portal</p>
+          </motion.div>
+        ) : (
+          <motion.form key="form" onSubmit={handleSubmit} className="space-y-5" initial={{ opacity: 1 }}>
+            {/* Row 1 — Name + Role */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Full Name *</label>
+                <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  placeholder="e.g. Riya Sharma" className="input-field" required />
+              </div>
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Job Title *</label>
+                <input type="text" value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+                  placeholder="e.g. Frontend Engineer" className="input-field" required />
+              </div>
+            </div>
+
+            {/* Row 2 — Department + Location */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Department *</label>
+                <select value={form.department} onChange={e => setForm(f => ({ ...f, department: e.target.value }))} className="input-field">
+                  {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Location</label>
+                <div className="relative">
+                  <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                  <input type="text" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))}
+                    placeholder="Bangalore" className="input-field pl-9" />
+                </div>
+              </div>
+            </div>
+
+            {/* Row 3 — Email + Phone */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Email *</label>
+                <div className="relative">
+                  <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                  <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    placeholder="riya@company.com" className="input-field pl-9" required />
+                </div>
+              </div>
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Phone</label>
+                <div className="relative">
+                  <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                  <input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                    placeholder="+91 98765 00000" className="input-field pl-9" />
+                </div>
+              </div>
+            </div>
+
+            {/* Row 4 — Manager + Join Date */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Reporting Manager</label>
+                <div className="relative">
+                  <Briefcase size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                  <input type="text" value={form.manager} onChange={e => setForm(f => ({ ...f, manager: e.target.value }))}
+                    placeholder="e.g. Priya Menon" className="input-field pl-9" />
+                </div>
+              </div>
+              <div>
+                <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Join Date</label>
+                <input type="date" value={form.joinDate} onChange={e => setForm(f => ({ ...f, joinDate: e.target.value }))}
+                  className="input-field" />
+              </div>
+            </div>
+
+            {/* Row 5 — Bio */}
+            <div>
+              <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Short Bio</label>
+              <textarea value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
+                placeholder="A brief intro about this person…" rows={2} className="input-field resize-none" />
+            </div>
+
+            {/* Row 6 — Cover colour picker */}
+            <div>
+              <label className="text-white/40 text-xs font-bold uppercase tracking-wider block mb-2">Profile Colour</label>
+              <div className="flex gap-2 flex-wrap">
+                {COVER_COLORS.map(c => (
+                  <button key={c} type="button" onClick={() => setForm(f => ({ ...f, coverColor: c }))}
+                    className="w-8 h-8 rounded-xl transition-all"
+                    style={{
+                      background: c,
+                      border: form.coverColor === c ? '3px solid white' : '2px solid transparent',
+                      boxShadow: form.coverColor === c ? `0 0 12px ${c}80` : 'none',
+                      transform: form.coverColor === c ? 'scale(1.2)' : 'scale(1)',
+                    }} />
+                ))}
+              </div>
+            </div>
+
+            {/* Preview pill */}
+            {form.name && (
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+                className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                style={{ background: `${form.coverColor}10`, border: `1px solid ${form.coverColor}25` }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm text-white flex-shrink-0"
+                  style={{ background: form.coverColor }}>
+                  {getInitials(form.name) || '?'}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-white font-bold text-sm truncate">{form.name || 'Employee Name'}</p>
+                  <p className="text-white/40 text-xs">{form.role || 'Role'} · {form.department}</p>
+                </div>
+                <span className="ml-auto text-xs px-2 py-0.5 rounded-full font-bold"
+                  style={{ background: 'rgba(16,185,129,0.15)', color: '#34d399' }}>Preview</span>
+              </motion.div>
+            )}
+
+            <button type="submit" disabled={loading}
+              className="w-full py-3 rounded-2xl font-black text-white flex items-center justify-center gap-2 transition-all"
+              style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', boxShadow: '0 4px 20px rgba(99,102,241,0.4)' }}>
+              {loading
+                ? <div className="w-5 h-5 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                : <><UserPlus size={16} /> Add Employee</>
+              }
+            </button>
+          </motion.form>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -924,6 +1121,11 @@ export default function Admin() {
         <LeavesPanel />
         <AddAchievementPanel />
         <FeedbackPanel />
+      </div>
+
+      {/* Add Employee — full width */}
+      <div className="grid grid-cols-1 gap-6">
+        <AddEmployeePanel />
       </div>
 
       {/* Fun Friday Admin Section */}

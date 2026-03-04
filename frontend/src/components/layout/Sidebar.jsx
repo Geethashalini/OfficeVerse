@@ -21,10 +21,10 @@ const navItems = [
   { path: '/leaves',       icon: CalendarCheck,    label: 'Leave Tracker',color: '#10b981' },
   { path: '/feedback',     icon: MessageSquare,    label: 'Feedback',     color: '#a78bfa' },
   { path: '/analytics',    icon: BarChart3,        label: 'Analytics',    color: '#34d399' },
-  { path: '/pulse',        icon: Activity,         label: 'Team Pulse',   badge: '🔥', color: '#818cf8' },
+  { path: '/pulse',        icon: Activity,        label: 'Team Pulse',   badge: 'Live', color: '#818cf8' },
   { path: '/whos-in',      icon: MapPin,           label: "Who's In?",    color: '#10b981' },
   { path: '/projects',     icon: Briefcase,        label: 'Projects',     color: '#a78bfa' },
-  { path: '/fun-friday',   icon: Gamepad2,         label: 'Fun Friday',   color: '#ec4899', badge: '🎮' },
+  { path: '/fun-friday',   icon: Gamepad2,         label: 'Fun Friday',   color: '#ec4899', badge: 'Play' },
   { path: '/journey',      icon: Map,              label: 'Journey',      color: '#f472b6' },
   { path: '/ask-hr',       icon: MessageSquare,    label: 'Ask HR',       badge: 'AI', color: '#34d399' },
 ];

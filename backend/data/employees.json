@@ -11,13 +11,22 @@
     "birthday": "1993-07-22",
     "avatar": "AS",
     "photo": "https://randomuser.me/api/portraits/men/32.jpg",
-    "skills": ["React", "Node.js", "AWS", "TypeScript", "System Design"],
+    "skills": [
+      "React",
+      "Node.js",
+      "AWS",
+      "TypeScript",
+      "System Design"
+    ],
     "bio": "Passionate about building scalable systems. Tea enthusiast and weekend trekker.",
     "manager": "Priya Menon",
     "yearsAtCompany": 3,
     "status": "active",
     "points": 1250,
-    "achievements": ["ach001", "ach003"],
+    "achievements": [
+      "ach001",
+      "ach003"
+    ],
     "coverColor": "#6366f1"
   },
   {
@@ -32,13 +41,21 @@
     "birthday": "1989-03-10",
     "avatar": "PM",
     "photo": "https://randomuser.me/api/portraits/women/44.jpg",
-    "skills": ["Leadership", "Agile", "System Architecture", "Python", "Team Building"],
+    "skills": [
+      "Leadership",
+      "Agile",
+      "System Architecture",
+      "Python",
+      "Team Building"
+    ],
     "bio": "5 years of tech leadership. Believes great teams build great products.",
     "manager": "CEO",
     "yearsAtCompany": 5,
     "status": "active",
     "points": 2100,
-    "achievements": ["ach002"],
+    "achievements": [
+      "ach002"
+    ],
     "coverColor": "#8b5cf6"
   },
   {
@@ -53,13 +70,21 @@
     "birthday": "1996-11-05",
     "avatar": "SK",
     "photo": "https://randomuser.me/api/portraits/women/26.jpg",
-    "skills": ["Figma", "User Research", "Prototyping", "Adobe XD", "Motion Design"],
+    "skills": [
+      "Figma",
+      "User Research",
+      "Prototyping",
+      "Adobe XD",
+      "Motion Design"
+    ],
     "bio": "Designing experiences that delight. Coffee-fueled creative mind.",
     "manager": "Ravi Kumar",
     "yearsAtCompany": 2,
     "status": "active",
     "points": 980,
-    "achievements": ["ach004"],
+    "achievements": [
+      "ach004"
+    ],
     "coverColor": "#ec4899"
   },
   {
@@ -74,13 +99,21 @@
     "birthday": "1987-09-14",
     "avatar": "RK",
     "photo": "https://randomuser.me/api/portraits/men/41.jpg",
-    "skills": ["Design Strategy", "Brand Identity", "UI/UX", "Leadership", "Figma"],
+    "skills": [
+      "Design Strategy",
+      "Brand Identity",
+      "UI/UX",
+      "Leadership",
+      "Figma"
+    ],
     "bio": "Shaping the visual language of our brand. Design thinking advocate.",
     "manager": "CEO",
     "yearsAtCompany": 6,
     "status": "active",
     "points": 1890,
-    "achievements": ["ach005"],
+    "achievements": [
+      "ach005"
+    ],
     "coverColor": "#f59e0b"
   },
   {
@@ -95,7 +128,13 @@
     "birthday": "1997-02-28",
     "avatar": "AI",
     "photo": "https://randomuser.me/api/portraits/women/54.jpg",
-    "skills": ["Python", "Machine Learning", "TensorFlow", "SQL", "Data Visualization"],
+    "skills": [
+      "Python",
+      "Machine Learning",
+      "TensorFlow",
+      "SQL",
+      "Data Visualization"
+    ],
     "bio": "Turning data into decisions. ML enthusiast and Kaggle competitor.",
     "manager": "Vikram Singh",
     "yearsAtCompany": 2,
@@ -116,13 +155,21 @@
     "birthday": "1985-06-18",
     "avatar": "VS",
     "photo": "https://randomuser.me/api/portraits/men/32.jpg2",
-    "skills": ["Product Strategy", "Roadmapping", "Stakeholder Management", "OKRs", "Go-to-Market"],
+    "skills": [
+      "Product Strategy",
+      "Roadmapping",
+      "Stakeholder Management",
+      "OKRs",
+      "Go-to-Market"
+    ],
     "bio": "7 years of product leadership. Building products people love.",
     "manager": "CEO",
     "yearsAtCompany": 7,
     "status": "active",
     "points": 3200,
-    "achievements": ["ach006"],
+    "achievements": [
+      "ach006"
+    ],
     "coverColor": "#3b82f6"
   },
   {
@@ -137,13 +184,21 @@
     "birthday": "1991-12-30",
     "avatar": "MN",
     "photo": "https://randomuser.me/api/portraits/women/33.jpg",
-    "skills": ["Talent Acquisition", "Employee Relations", "L&D", "Performance Management", "Culture Building"],
+    "skills": [
+      "Talent Acquisition",
+      "Employee Relations",
+      "L&D",
+      "Performance Management",
+      "Culture Building"
+    ],
     "bio": "Championing people and culture. Making HR human again.",
     "manager": "CHRO",
     "yearsAtCompany": 4,
     "status": "active",
     "points": 1540,
-    "achievements": ["ach007"],
+    "achievements": [
+      "ach007"
+    ],
     "coverColor": "#f97316"
   },
   {
@@ -158,13 +213,22 @@
     "birthday": "1994-04-07",
     "avatar": "KM",
     "photo": "https://randomuser.me/api/portraits/men/22.jpg",
-    "skills": ["Kubernetes", "Docker", "CI/CD", "Terraform", "AWS", "Linux"],
+    "skills": [
+      "Kubernetes",
+      "Docker",
+      "CI/CD",
+      "Terraform",
+      "AWS",
+      "Linux"
+    ],
     "bio": "Automating everything possible. 99.99% uptime enthusiast.",
     "manager": "Priya Menon",
     "yearsAtCompany": 3,
     "status": "active",
     "points": 1100,
-    "achievements": ["ach008"],
+    "achievements": [
+      "ach008"
+    ],
     "coverColor": "#14b8a6"
   },
   {
@@ -179,7 +243,13 @@
     "birthday": "1995-08-23",
     "avatar": "DR",
     "photo": "https://randomuser.me/api/portraits/women/17.jpg",
-    "skills": ["Content Strategy", "SEO", "Social Media", "Campaign Management", "Analytics"],
+    "skills": [
+      "Content Strategy",
+      "SEO",
+      "Social Media",
+      "Campaign Management",
+      "Analytics"
+    ],
     "bio": "Storyteller at heart. Building brand love one campaign at a time.",
     "manager": "CMO",
     "yearsAtCompany": 1,
@@ -200,7 +270,13 @@
     "birthday": "1998-01-15",
     "avatar": "RJ",
     "photo": "https://randomuser.me/api/portraits/men/18.jpg",
-    "skills": ["Vue.js", "Django", "PostgreSQL", "Redis", "GraphQL"],
+    "skills": [
+      "Vue.js",
+      "Django",
+      "PostgreSQL",
+      "Redis",
+      "GraphQL"
+    ],
     "bio": "Code by day, game by night. Building things that matter.",
     "manager": "Priya Menon",
     "yearsAtCompany": 1,
@@ -208,5 +284,26 @@
     "points": 430,
     "achievements": [],
     "coverColor": "#ef4444"
+  },
+  {
+    "id": "emp098935",
+    "status": "active",
+    "points": 0,
+    "yearsAtCompany": 0,
+    "achievements": [],
+    "skills": [],
+    "name": "geetha",
+    "role": "developer",
+    "department": "Engineering",
+    "email": "geetha@gmail.com",
+    "phone": "8861537229",
+    "location": "Bangalore",
+    "joinDate": "2026-03-04",
+    "bio": "enthusiastic developer",
+    "manager": "harshit",
+    "coverColor": "#6366f1",
+    "avatar": "G",
+    "photo": "https://ui-avatars.com/api/?name=geetha&background=6366f1&color=fff&size=128",
+    "birthday": ""
   }
 ]

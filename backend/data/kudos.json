@@ -3,64 +3,64 @@
     "id": "kud001",
     "fromId": "emp002", "fromName": "Priya Menon", "fromAvatar": "PM", "fromColor": "#8b5cf6", "fromPhoto": "https://randomuser.me/api/portraits/women/44.jpg",
     "toId": "emp001", "toName": "Arjun Sharma", "toAvatar": "AS", "toColor": "#6366f1", "toPhoto": "https://randomuser.me/api/portraits/men/32.jpg",
-    "message": "Arjun, the way you handled the production incident last week was phenomenal. You stayed calm under pressure and fixed the issue in record time. The team is lucky to have you! 🙏",
-    "badge": "🦸 Hero", "badgeColor": "#f59e0b", "category": "Problem Solving",
+    "message": "Arjun, the way you handled the production incident last week was phenomenal. You stayed calm under pressure and fixed the issue in record time. The team is lucky to have you!",
+    "badge": "Hero", "badgeColor": "#f59e0b", "category": "Problem Solving",
     "date": "2026-02-28", "likes": 18, "points": 100
   },
   {
     "id": "kud002",
     "fromId": "emp001", "fromName": "Arjun Sharma", "fromAvatar": "AS", "fromColor": "#6366f1", "fromPhoto": "https://randomuser.me/api/portraits/men/32.jpg",
     "toId": "emp008", "toName": "Karan Malhotra", "toAvatar": "KM", "toColor": "#14b8a6", "toPhoto": "https://randomuser.me/api/portraits/men/22.jpg",
-    "message": "Karan, setting up the entire CI/CD pipeline from scratch in 2 days was nothing short of magic! Our deployment process has never been smoother. You're an absolute rockstar! 🚀",
-    "badge": "🚀 Innovator", "badgeColor": "#6366f1", "category": "Innovation",
+    "message": "Karan, setting up the entire CI/CD pipeline from scratch in 2 days was nothing short of magic! Our deployment process has never been smoother. You are an absolute rockstar!",
+    "badge": "Innovator", "badgeColor": "#6366f1", "category": "Innovation",
     "date": "2026-02-26", "likes": 24, "points": 100
   },
   {
     "id": "kud003",
     "fromId": "emp004", "fromName": "Ravi Kumar", "fromAvatar": "RK", "fromColor": "#f59e0b", "fromPhoto": "https://randomuser.me/api/portraits/men/41.jpg",
     "toId": "emp003", "toName": "Sneha Kapoor", "toAvatar": "SK", "toColor": "#ec4899", "toPhoto": "https://randomuser.me/api/portraits/women/26.jpg",
-    "message": "Sneha, your user research presentation blew everyone away! The depth of insights you uncovered in just 2 weeks changed how we're thinking about the product. You're a design superstar! ⭐",
-    "badge": "⭐ Star", "badgeColor": "#ec4899", "category": "Excellence",
+    "message": "Sneha, your user research presentation blew everyone away! The depth of insights you uncovered in just 2 weeks changed how we're thinking about the product. You're a design superstar!",
+    "badge": "Star", "badgeColor": "#ec4899", "category": "Excellence",
     "date": "2026-02-24", "likes": 31, "points": 150
   },
   {
     "id": "kud004",
     "fromId": "emp007", "fromName": "Meera Nair", "fromAvatar": "MN", "fromColor": "#f97316", "fromPhoto": "https://randomuser.me/api/portraits/women/33.jpg",
     "toId": "emp005", "toName": "Ananya Iyer", "toAvatar": "AI", "toColor": "#10b981", "toPhoto": "https://randomuser.me/api/portraits/women/54.jpg",
-    "message": "Ananya, your churn prediction model has already saved us 3 at-risk accounts this quarter! The business impact is real and measurable. You're what data-driven decisions look like! 📊",
-    "badge": "💡 Insights", "badgeColor": "#10b981", "category": "Business Impact",
+    "message": "Ananya, your churn prediction model has already saved us 3 at-risk accounts this quarter! The business impact is real and measurable. You're what data-driven decisions look like!",
+    "badge": "Insights", "badgeColor": "#10b981", "category": "Business Impact",
     "date": "2026-02-22", "likes": 15, "points": 100
   },
   {
     "id": "kud005",
     "fromId": "emp006", "fromName": "Vikram Singh", "fromAvatar": "VS", "fromColor": "#3b82f6", "fromPhoto": "https://randomuser.me/api/portraits/men/32.jpg2",
     "toId": "emp007", "toName": "Meera Nair", "toAvatar": "MN", "toColor": "#f97316", "toPhoto": "https://randomuser.me/api/portraits/women/33.jpg",
-    "message": "Meera, the onboarding experience you designed for our new batch is exceptional. 15 new joiners and every single one of them was raving about it. You make people feel at home! ❤️",
-    "badge": "❤️ Culture", "badgeColor": "#ef4444", "category": "Culture Building",
+    "message": "Meera, the onboarding experience you designed for our new batch is exceptional. 15 new joiners and every single one of them was raving about it. You make people feel at home!",
+    "badge": "Culture", "badgeColor": "#ef4444", "category": "Culture Building",
     "date": "2026-02-20", "likes": 28, "points": 150
   },
   {
     "id": "kud006",
     "fromId": "emp003", "fromName": "Sneha Kapoor", "fromAvatar": "SK", "fromColor": "#ec4899", "fromPhoto": "https://randomuser.me/api/portraits/women/26.jpg",
     "toId": "emp009", "toName": "Divya Reddy", "toAvatar": "DR", "toColor": "#a855f7", "toPhoto": "https://randomuser.me/api/portraits/women/17.jpg",
-    "message": "Divya, the product launch campaign you ran last month was absolutely brilliant! The creative strategy and execution were flawless. You're a marketing genius! 🎯",
-    "badge": "🎯 Impact", "badgeColor": "#a855f7", "category": "Excellence",
+    "message": "Divya, the product launch campaign you ran last month was absolutely brilliant! The creative strategy and execution were flawless. You're a marketing genius!",
+    "badge": "Impact", "badgeColor": "#a855f7", "category": "Excellence",
     "date": "2026-02-18", "likes": 22, "points": 100
   },
   {
     "id": "kud007",
     "fromId": "emp008", "fromName": "Karan Malhotra", "fromAvatar": "KM", "fromColor": "#14b8a6", "fromPhoto": "https://randomuser.me/api/portraits/men/22.jpg",
     "toId": "emp010", "toName": "Rahul Joshi", "toAvatar": "RJ", "toColor": "#ef4444", "toPhoto": "https://randomuser.me/api/portraits/men/18.jpg",
-    "message": "Rahul, for a junior dev, your code quality is outstanding! Your PRs are always clean, well-documented, and thoughtful. You're going to be a senior in no time! Keep it up! 💪",
-    "badge": "⚡ Rising Star", "badgeColor": "#f59e0b", "category": "Growth",
+    "message": "Rahul, for a junior dev, your code quality is outstanding! Your PRs are always clean, well-documented, and thoughtful. You're going to be a senior in no time! Keep it up!",
+    "badge": "Rising Star", "badgeColor": "#f59e0b", "category": "Growth",
     "date": "2026-02-16", "likes": 19, "points": 75
   },
   {
     "id": "kud008",
     "fromId": "emp005", "fromName": "Ananya Iyer", "fromAvatar": "AI", "fromColor": "#10b981", "fromPhoto": "https://randomuser.me/api/portraits/women/54.jpg",
     "toId": "emp002", "toName": "Priya Menon", "toAvatar": "PM", "toColor": "#8b5cf6", "toPhoto": "https://randomuser.me/api/portraits/women/44.jpg",
-    "message": "Priya, thank you for your unconditional support during my transition to a new project. Your mentoring has been invaluable. You're the best manager I've ever had! 🙏",
-    "badge": "🌟 Mentor", "badgeColor": "#8b5cf6", "category": "Mentorship",
+    "message": "Priya, thank you for your unconditional support during my transition to a new project. Your mentoring has been invaluable. You're the best manager I've ever had!",
+    "badge": "Mentor", "badgeColor": "#8b5cf6", "category": "Mentorship",
     "date": "2026-02-14", "likes": 34, "points": 150
   }
 ]

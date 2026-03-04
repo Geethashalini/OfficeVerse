@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
-import { Map, Star, TrendingUp, Award, Cake, BookOpen, Zap, ChevronDown, Play } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { Map, Star, TrendingUp, Award, Cake, BookOpen, Zap, ChevronDown, Rocket, BarChart2 } from 'lucide-react';
 import Avatar from '../components/common/Avatar';
 import { format, parseISO, differenceInDays, differenceInYears } from 'date-fns';
 import api from '../services/api';
 import toast from 'react-hot-toast';
 
 const TYPE_CONFIG = {
-  joined:    { icon: Zap,        color: '#6366f1', label: 'Joined',       glyph: '🚀' },
-  promotion: { icon: TrendingUp, color: '#10b981', label: 'Promotion',    glyph: '📈' },
-  anniversary:{ icon: Cake,     color: '#ec4899', label: 'Anniversary',  glyph: '🎂' },
-  skill:     { icon: BookOpen,   color: '#3b82f6', label: 'Skill Growth', glyph: '📚' },
-  award:     { icon: Award,      color: '#f59e0b', label: 'Recognition',  glyph: '🏆' },
-  milestone: { icon: Star,       color: '#a855f7', label: 'Milestone',    glyph: '⭐' },
+  joined:     { icon: Zap,        color: '#6366f1', label: 'Joined',       GlyphIcon: Rocket    },
+  promotion:  { icon: TrendingUp, color: '#10b981', label: 'Promotion',    GlyphIcon: BarChart2 },
+  anniversary:{ icon: Cake,       color: '#ec4899', label: 'Anniversary',  GlyphIcon: Cake      },
+  skill:      { icon: BookOpen,   color: '#3b82f6', label: 'Skill Growth', GlyphIcon: BookOpen  },
+  award:      { icon: Award,      color: '#f59e0b', label: 'Recognition',  GlyphIcon: Award     },
+  milestone:  { icon: Star,       color: '#a855f7', label: 'Milestone',    GlyphIcon: Star      },
 };
 
 /* ── Animated number (years/days) ─────────────────────────── */
@@ -69,7 +70,7 @@ function EventCard({ event, index, isLast }) {
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="badge text-[10px] font-bold"
                   style={{ background: `${cfg.color}15`, color: cfg.color, border: `1px solid ${cfg.color}25` }}>
-                  {cfg.glyph} {cfg.label}
+                  <cfg.GlyphIcon size={9} className="inline mr-0.5" /> {cfg.label}
                 </span>
                 {event.badge && (
                   <span className="badge text-[10px] font-black"
@@ -127,8 +128,6 @@ export default function Journey() {
   const [journeys, setJourneys] = useState([]);
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [playing, setPlaying] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(3);
 
   useEffect(() => {
     api.get('/journeys').then(d => {
@@ -139,23 +138,9 @@ export default function Journey() {
   }, []);
 
   useEffect(() => {
-    setVisibleCount(3);
-    setPlaying(false);
   }, [selected]);
 
   const handleSelect = (j) => { setSelected(j); };
-
-  const handlePlay = () => {
-    setPlaying(true);
-    setVisibleCount(0);
-    let i = 0;
-    const total = selected?.events.length || 0;
-    const tick = setInterval(() => {
-      i++;
-      setVisibleCount(i);
-      if (i >= total) { clearInterval(tick); setPlaying(false); }
-    }, 600);
-  };
 
   if (loading) {
     return <div className="flex justify-center h-64 items-center">
@@ -212,7 +197,7 @@ export default function Journey() {
                     <Avatar photo={selected.photo} initials={selected.avatar} color={selected.coverColor} size="xl" />
                   </div>
                   {/* Play button */}
-                  <button onClick={handlePlay} disabled={playing}
+                  {/* <button onClick={handlePlay} disabled={playing}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm mb-1 transition-all hover:scale-105 active:scale-95"
                     style={{
                       background: playing ? 'rgba(255,255,255,0.05)' : `linear-gradient(135deg, ${selected.coverColor}, ${selected.coverColor}bb)`,
@@ -221,7 +206,7 @@ export default function Journey() {
                     }}>
                     <Play size={14} className={playing ? 'animate-pulse' : ''} />
                     {playing ? 'Playing story…' : 'Play Story'}
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className="mt-3">
@@ -251,28 +236,18 @@ export default function Journey() {
             {/* Type legend */}
             <div className="flex flex-wrap gap-2">
               {Object.entries(TYPE_CONFIG).map(([key, cfg]) => (
-                <span key={key} className="badge text-xs"
+                <span key={key} className="badge text-xs flex items-center gap-1"
                   style={{ background: `${cfg.color}12`, color: cfg.color, border: `1px solid ${cfg.color}22` }}>
-                  {cfg.glyph} {cfg.label}
+                  <cfg.GlyphIcon size={10} /> {cfg.label}
                 </span>
               ))}
             </div>
 
             {/* Timeline */}
             <div className="space-y-0">
-              {events.slice(0, playing ? visibleCount : events.length).map((event, i) => (
-                <EventCard key={event.id} event={event} index={i} isLast={i === Math.min(visibleCount, events.length) - 1} />
+              {events.map((event, i) => (
+                <EventCard key={event.id} event={event} index={i} isLast={i === events.length - 1} />
               ))}
-              {!playing && events.length > 3 && visibleCount === 3 && (
-                <button onClick={() => setVisibleCount(events.length)}
-                  className="w-full py-3 rounded-2xl text-sm font-semibold transition-all mt-2"
-                  style={{ background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.4)', border: '1px solid rgba(255,255,255,0.07)' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
-                >
-                  Show all {events.length} moments ↓
-                </button>
-              )}
             </div>
           </div>
         )}

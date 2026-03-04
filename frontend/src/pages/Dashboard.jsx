@@ -4,11 +4,14 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, useIn
 import {
   Trophy, PartyPopper, Megaphone, Heart, Users, TrendingUp,
   ArrowRight, Zap, Bell, BarChart3, Star, Sparkles,
-  ArrowUpRight, Activity, CheckCircle, X
+  ArrowUpRight, Activity, CheckCircle, X, CalendarCheck, Map,
+  Play, BookOpen, Award, Cake, Sun, Cloud, Moon,
+  TrendingUp as TrendUp, Smile, Meh, Rocket, BookMarked, MapPin, Gamepad2
 } from 'lucide-react';
 import { createPortal } from 'react-dom';
-import { achievementsAPI, celebrationsAPI, announcementsAPI, kudosAPI, analyticsAPI, pulseAPI } from '../services/api';
-import { format, parseISO } from 'date-fns';
+import { achievementsAPI, celebrationsAPI, announcementsAPI, kudosAPI, analyticsAPI, pulseAPI, leavesAPI } from '../services/api';
+import api from '../services/api';
+import { format, parseISO, differenceInYears } from 'date-fns';
 import Avatar from '../components/common/Avatar';
 import { useAuth } from '../context/AuthContext';
 import BirthdayCountdownCard from '../components/common/BirthdayCountdown';
@@ -302,13 +305,14 @@ function KudoModal({ kudo, onClose }) {
               <Avatar photo={kudo.toPhoto} initials={kudo.toAvatar} color={kudo.toColor} size="md" shape="circle" />
             </div>
           </div>
-          <div className="flex justify-center mb-5">
-            <motion.span className="px-4 py-2 rounded-full text-sm font-black"
+            <motion.div className="flex justify-center mb-5">
+            <motion.div className="flex items-center gap-2 px-4 py-2 rounded-full"
               initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ ...SPRING_SNAPPY, delay: 0.15 }}
-              style={{ background: `${kudo.badgeColor}20`, color: kudo.badgeColor, border: `1px solid ${kudo.badgeColor}35`, boxShadow: `0 0 20px ${kudo.badgeColor}25` }}>
-              {kudo.badge}
-            </motion.span>
-          </div>
+              style={{ background: `${kudo.badgeColor}20`, border: `1px solid ${kudo.badgeColor}35`, boxShadow: `0 0 20px ${kudo.badgeColor}25` }}>
+              <BadgeIcon badge={kudo.badge} color={kudo.badgeColor} size={14} />
+              <span className="text-sm font-black" style={{ color: kudo.badgeColor }}>{kudo.badge}</span>
+            </motion.div>
+          </motion.div>
           <div className="px-5 py-4 rounded-2xl mb-5" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
             <p className="text-white/75 text-sm leading-relaxed italic text-center">"{kudo.message}"</p>
           </div>
@@ -319,7 +323,7 @@ function KudoModal({ kudo, onClose }) {
             </div>
             <div className="flex items-center gap-3">
               <span className="text-xs font-bold" style={{ color: '#a5b4fc' }}>+{kudo.points} pts</span>
-              <span className="text-white/25 text-xs">❤️ {kudo.likes}</span>
+                      <span className="text-white/25 text-xs">♥ {kudo.likes}</span>
             </div>
           </div>
         </div>
@@ -357,16 +361,208 @@ function DaysChip({ days }) {
   return <span className="badge text-xs" style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.08)' }}>{days}d</span>;
 }
 
+/* ── Badge icon map (replaces emoji badges from backend data) ─ */
+const BADGE_ICON_MAP = {
+  'Trophy':     Trophy,
+  'Star':       Star,
+  'Sparkles':   Sparkles,
+  'Award':      Award,
+  'Rocket':     Zap,
+  'Diamond':    Star,
+  'Heart':      Heart,
+  'Shield':     CheckCircle,
+  'Hero':       CheckCircle,
+  'Innovator':  Zap,
+  'Insights':   Activity,
+  'Culture':    Heart,
+  'Impact':     TrendingUp,
+  'Rising Star':Star,
+  'Mentor':     Sparkles,
+};
+function BadgeIcon({ badge, color, size = 14 }) {
+  const Icon = BADGE_ICON_MAP[badge] || Star;
+  return <Icon size={size} style={{ color }} />;
+}
+
+/* ── My Journey Modal ──────────────────────────────────────── */
+const JOURNEY_TYPE_CONFIG = {
+  joined:      { color: '#6366f1', label: 'Joined',       GlyphIcon: Zap       },
+  promotion:   { color: '#10b981', label: 'Promotion',    GlyphIcon: TrendingUp },
+  anniversary: { color: '#ec4899', label: 'Anniversary',  GlyphIcon: Cake      },
+  skill:       { color: '#3b82f6', label: 'Skill Growth', GlyphIcon: BookOpen  },
+  award:       { color: '#f59e0b', label: 'Recognition',  GlyphIcon: Award     },
+  milestone:   { color: '#a855f7', label: 'Milestone',    GlyphIcon: Star      },
+};
+
+function JourneyEventCard({ event, index }) {
+  const cfg = JOURNEY_TYPE_CONFIG[event.type] || JOURNEY_TYPE_CONFIG.milestone;
+  return (
+    <motion.div
+      className="relative flex gap-4"
+      initial={{ opacity: 0, x: -16 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: index * 0.07, type: 'spring', stiffness: 200, damping: 24 }}
+    >
+      {/* Spine dot + line */}
+      <div className="flex flex-col items-center flex-shrink-0" style={{ width: 36 }}>
+        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-base flex-shrink-0"
+          style={{
+            background: event.highlight ? `linear-gradient(135deg, ${event.color}, ${event.color}bb)` : `${event.color}18`,
+            border: `2px solid ${event.color}${event.highlight ? 'ff' : '35'}`,
+            boxShadow: event.highlight ? `0 0 16px ${event.color}50` : 'none',
+          }}>
+          {event.icon}
+        </div>
+        <div className="flex-1 w-0.5 mt-1.5" style={{ background: `linear-gradient(180deg, ${event.color}30, transparent)`, minHeight: 24 }} />
+      </div>
+      {/* Card */}
+      <div className="flex-1 pb-5">
+        <div className="p-3.5 rounded-2xl"
+          style={{
+            background: event.highlight ? `linear-gradient(135deg, ${event.color}0a, rgba(255,255,255,0.02))` : 'rgba(255,255,255,0.03)',
+            border: `1px solid ${event.highlight ? event.color + '30' : 'rgba(255,255,255,0.07)'}`,
+          }}>
+          <div className="flex items-start justify-between gap-2 mb-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"
+                style={{ background: `${cfg.color}15`, color: cfg.color, border: `1px solid ${cfg.color}25` }}>
+                <cfg.GlyphIcon size={9} /> {cfg.label}
+              </span>
+              {event.highlight && (
+                <span className="text-[10px] font-black px-2 py-0.5 rounded-full"
+                  style={{ background: 'rgba(245,158,11,0.15)', color: '#fbbf24', border: '1px solid rgba(245,158,11,0.3)' }}>
+                  ✦ Key Moment
+                </span>
+              )}
+            </div>
+            <span className="text-white/25 text-xs flex-shrink-0">{format(parseISO(event.date), 'MMM yyyy')}</span>
+          </div>
+          <p className={`font-bold leading-snug mb-1 ${event.highlight ? 'text-white text-sm' : 'text-white/80 text-xs'}`}>{event.title}</p>
+          <p className="text-white/40 text-xs leading-relaxed">{event.description}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function MyJourneyModal({ user, onClose }) {
+  const [journey, setJourney] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get('/journeys').then(all => {
+      const mine = all.find(j => j.employeeId === (user?.id || 'emp001')) || all[0];
+      setJourney(mine);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  const events = journey?.events || [];
+  const years = journey ? differenceInYears(new Date(), parseISO(journey.joinDate)) : 0;
+  const highlights = events.filter(e => e.highlight).length;
+
+  return createPortal(
+    <motion.div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(18px)' }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="w-full max-w-3xl flex flex-col overflow-hidden"
+        style={{ maxHeight: '88vh', background: 'rgb(10,8,24)', border: '1px solid rgba(168,85,247,0.3)', borderRadius: 24, boxShadow: '0 32px 80px rgba(0,0,0,0.8), 0 0 60px rgba(168,85,247,0.1)' }}
+        initial={{ scale: 0.9, y: 30, opacity: 0 }}
+        animate={{ scale: 1,   y: 0,  opacity: 1 }}
+        exit={{    scale: 0.92, y: 10, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 220, damping: 26 }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Gradient top bar */}
+        <div className="h-1.5 flex-shrink-0" style={{ background: 'linear-gradient(90deg, #6366f1, #a855f7, #f472b6)' }} />
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'rgba(168,85,247,0.15)', border: '1px solid rgba(168,85,247,0.3)' }}>
+              <Map size={15} style={{ color: '#c084fc' }} />
+            </div>
+            <div>
+              <h3 className="text-white font-black text-sm">My Journey</h3>
+              <p className="text-white/30 text-xs">Your career story at OfficeVerse</p>
+            </div>
+          </div>
+          <motion.button onClick={onClose} whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.9 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className="p-1.5 rounded-xl text-white/30 hover:text-white hover:bg-white/8 transition-colors">
+            <X size={16} />
+          </motion.button>
+        </div>
+
+        {loading ? (
+          <div className="flex-1 flex items-center justify-center py-16">
+            <div className="w-8 h-8 rounded-full border-2 border-purple-500 border-t-transparent animate-spin" />
+          </div>
+        ) : journey ? (
+          <>
+            {/* Profile strip */}
+            <div className="flex-shrink-0 px-5 py-4" style={{ background: `linear-gradient(135deg, ${journey.coverColor}10, transparent)`, borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center gap-3">
+                <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0"
+                  style={{ border: `2px solid ${journey.coverColor}60`, boxShadow: `0 0 20px ${journey.coverColor}30` }}>
+                  {journey.photo
+                    ? <img src={journey.photo} alt={journey.employeeName} className="w-full h-full object-cover" />
+                    : <div className="w-full h-full flex items-center justify-center font-black text-lg"
+                        style={{ background: `${journey.coverColor}25`, color: journey.coverColor }}>{journey.avatar}</div>
+                  }
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-black text-base">{journey.employeeName}</p>
+                  <p className="text-white/45 text-xs">{journey.role} · {journey.department}</p>
+                  <p className="text-white/35 text-xs italic mt-0.5">"{journey.story}"</p>
+                </div>
+                {/* Stats */}
+                <div className="flex gap-4 flex-shrink-0">
+                  {[
+                    { v: years,            l: 'Years',    c: journey.coverColor },
+                    { v: highlights,       l: 'Key',      c: '#fbbf24' },
+                    { v: events.length,    l: 'Events',   c: '#a5b4fc' },
+                  ].map(s => (
+                    <div key={s.l} className="text-center">
+                      <p className="font-black text-lg leading-none" style={{ color: s.c }}>{s.v}</p>
+                      <p className="text-white/25 text-[10px]">{s.l}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-0">
+              {events.map((event, i) => (
+                <JourneyEventCard key={event.id} event={event} index={i} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center py-16 text-white/30 text-sm">No journey found</div>
+        )}
+      </motion.div>
+    </motion.div>,
+    document.body
+  );
+}
+
 /* ── Main Dashboard ────────────────────────────────────────── */
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [showJourney, setShowJourney] = useState(false);
   const [analytics, setAnalytics]     = useState(null);
   const [achievements, setAchievements] = useState([]);
   const [upcoming, setUpcoming]       = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [kudos, setKudos]             = useState([]);
   const [pulse, setPulse]             = useState(null);
+  const [myLeaves, setMyLeaves]       = useState(null);
   const [loading, setLoading]         = useState(true);
   const [selectedKudo, setSelectedKudo] = useState(null);
 
@@ -374,10 +570,15 @@ export default function Dashboard() {
     Promise.all([
       analyticsAPI.get(), achievementsAPI.getAll({ featured: true }),
       celebrationsAPI.getUpcoming(30), announcementsAPI.getAll({ pinned: true }),
-      kudosAPI.getAll(), pulseAPI.get(),
-    ]).then(([a, ach, up, ann, k, p]) => {
+      kudosAPI.getAll(), pulseAPI.get(), leavesAPI.getAll(),
+    ]).then(([a, ach, up, ann, k, p, lv]) => {
       setAnalytics(a); setAchievements(ach.slice(0, 3)); setUpcoming(up.slice(0, 5));
       setAnnouncements(ann.slice(0, 3)); setKudos(k.slice(0, 3)); setPulse(p);
+      // Compute my leaves: filter by current user, count approved + pending
+      const myLv = lv.filter(l => l.employeeId === (user?.id || 'emp001'));
+      const used = myLv.filter(l => l.status === 'approved').reduce((s, l) => s + (l.days || 1), 0);
+      const total = 20; // standard allocation
+      setMyLeaves({ used, remaining: total - used, total });
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
@@ -385,7 +586,8 @@ export default function Dashboard() {
   const now  = new Date();
   const hour = now.getHours();
   const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-  const greetEmoji = hour < 12 ? '🌤️' : hour < 17 ? '☀️' : '🌙';
+  const GreetIcon = hour < 12 ? Sun : hour < 17 ? Cloud : Moon;
+  const greetColor = hour < 12 ? '#fbbf24' : hour < 17 ? '#818cf8' : '#6366f1';
   const displayName = user?.name?.split(' ')[0] || 'there';
 
   if (loading) {
@@ -434,15 +636,14 @@ export default function Dashboard() {
           style={{ background: 'radial-gradient(ellipse at 90% 80%, rgba(168,85,247,0.12), transparent 55%)' }}
         />
 
-        {/* Floating decorative rings */}
-        <motion.div className="absolute -right-20 -top-20 w-72 h-72 rounded-full pointer-events-none border border-primary-500/8"
-          animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }} />
-        <motion.div className="absolute -right-8 -top-8 w-44 h-44 rounded-full pointer-events-none border border-purple-500/10"
-          animate={{ rotate: -360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} />
 
+<motion.div className="absolute -right-8 -top-8 w-44 h-44 rounded-full pointer-events-none border border-purple-500/10"
+          animate={{ rotate: -360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} />
         <div className="relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
-            <div>
+          <div className="flex flex-col xl:flex-row xl:items-center gap-6">
+
+            {/* Left — Greeting */}
+            <div className="flex-shrink-0">
               {/* Date chip */}
               <motion.div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-3 text-xs font-bold"
                 style={{ background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.25)', color: '#a5b4fc' }}
@@ -457,7 +658,7 @@ export default function Dashboard() {
               <motion.h2 className="text-white text-2xl sm:text-3xl font-black tracking-tight leading-tight mb-2"
                 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ ...SPRING_SNAPPY, delay: 0.2 }}>
-                {greetEmoji} {greeting},<br className="sm:hidden" />
+                <GreetIcon size={28} style={{ color: greetColor, flexShrink: 0 }} /> {greeting},<br className="sm:hidden" />
                 {' '}<motion.span
                   style={{ background: 'linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundSize: '200%' }}
                   animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
@@ -466,21 +667,95 @@ export default function Dashboard() {
                 </motion.span>
               </motion.h2>
 
-              <motion.p className="text-white/45 text-sm max-w-md leading-relaxed"
+              <motion.p className="text-white/45 text-sm max-w-xs leading-relaxed"
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}>
                 {upcoming.some(u => u.daysUntil === 0)
-                  ? '🎉 Someone is celebrating today! Check it out.'
+                  ? 'Someone is celebrating today! Check it out.'
                   : `You have ${upcoming.length} upcoming celebrations this month.`}
               </motion.p>
+
+              {/* CTA Buttons */}
+              <motion.div className="flex flex-wrap gap-3 mt-5"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ ...SPRING_SNAPPY, delay: 0.35 }}>
+                <MagneticBtn
+                  onClick={() => navigate('/kudos', { state: { openModal: true } })}
+                  className="btn-primary"
+                  style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', boxShadow: '0 4px 24px rgba(99,102,241,0.4)' }}>
+                  <Heart size={16} /> Give Kudos
+                </MagneticBtn>
+                <MagneticBtn to="/spotlight" className="btn-secondary">
+                  <Trophy size={16} /> View Spotlight
+                </MagneticBtn>
+                <MagneticBtn to="/analytics" className="btn-secondary">
+                  <BarChart3 size={16} /> Analytics
+                </MagneticBtn>
+                <MagneticBtn
+                  onClick={() => setShowJourney(true)}
+                  className="btn-secondary">
+                  <Map size={16} /> My Journey
+                </MagneticBtn>
+              </motion.div>
             </div>
 
-            <motion.div className="flex flex-wrap gap-2 sm:flex-col sm:items-end"
+            {/* Centre — My Space mini stats */}
+            <motion.div className="flex-1 grid grid-cols-3 gap-3"
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ ...SPRING_SNAPPY, delay: 0.28 }}>
+              {[
+                {
+                  icon: Trophy,
+                  label: 'My Achievements',
+                  value: analytics?.overview?.totalAchievements ?? '—',
+                  sub: 'awards earned',
+                  color: '#f59e0b',
+                  go: () => navigate('/spotlight', { state: { filterEmployee: user?.id, employeeName: user?.name } }),
+                },
+                {
+                  icon: Heart,
+                  label: 'Kudos Received',
+                  value: analytics?.overview?.totalKudos ?? '—',
+                  sub: 'this month',
+                  color: '#ec4899',
+                  go: () => navigate('/kudos', { state: { filterTo: user?.id } }),
+                },
+                {
+                  icon: CalendarCheck,
+                  label: 'My Leaves',
+                  value: myLeaves ? `${myLeaves.remaining}` : '—',
+                  sub: 'days remaining',
+                  color: '#10b981',
+                  go: () => navigate('/leaves'),
+                },
+              ].map(({ icon: Icon, label, value, sub, color, go }, i) => (
+                <motion.button key={label} onClick={go}
+                  className="text-left p-4 rounded-2xl group transition-all"
+                  style={{ background: `${color}0d`, border: `1px solid ${color}20` }}
+                  whileHover={{ y: -3, boxShadow: `0 8px 24px ${color}20` }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.15 }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: `${color}18`, border: `1px solid ${color}30` }}>
+                      <Icon size={14} style={{ color }} />
+                    </div>
+                    <ArrowUpRight size={12} className="ml-auto opacity-0 group-hover:opacity-60 transition-opacity" style={{ color }} />
+                  </div>
+                  <p className="text-white font-black text-2xl leading-none mb-1">{value}</p>
+                  <p className="text-white/35 text-[11px] font-semibold leading-tight">{label}</p>
+                  <p className="text-xs mt-0.5" style={{ color: `${color}99` }}>{sub}</p>
+                </motion.button>
+              ))}
+            </motion.div>
+
+            {/* Right — badges */}
+            <motion.div className="flex flex-wrap gap-2 xl:flex-col xl:items-end flex-shrink-0"
               initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
               transition={{ ...SPRING_SNAPPY, delay: 0.25 }}>
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
                 style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.2)', color: '#a5b4fc' }}>
-                <Sparkles size={12} /> 1,250 Recognition Points
+                <Sparkles size={12} /> {(user?.points || 1250).toLocaleString()} pts
               </div>
               <motion.div className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold"
                 style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#34d399' }}
@@ -491,25 +766,8 @@ export default function Dashboard() {
                 Active Now
               </motion.div>
             </motion.div>
-          </div>
 
-          {/* CTA Buttons */}
-          <motion.div className="flex flex-wrap gap-3 mt-6"
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ ...SPRING_SNAPPY, delay: 0.35 }}>
-            <MagneticBtn
-              onClick={() => navigate('/kudos', { state: { openModal: true } })}
-              className="btn-primary"
-              style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', boxShadow: '0 4px 24px rgba(99,102,241,0.4)' }}>
-              <Heart size={16} /> Give Kudos
-            </MagneticBtn>
-            <MagneticBtn to="/spotlight" className="btn-secondary">
-              <Trophy size={16} /> View Spotlight
-            </MagneticBtn>
-            <MagneticBtn to="/analytics" className="btn-secondary">
-              <BarChart3 size={16} /> Analytics
-            </MagneticBtn>
-          </motion.div>
+          </div>
         </div>
       </motion.div>
 
@@ -549,16 +807,17 @@ export default function Dashboard() {
                       <p className="text-white font-bold text-sm truncate">{ach.title}</p>
                       <p className="text-white/45 text-xs mt-0.5">{ach.employeeName} · {ach.department}</p>
                     </div>
-                    <motion.span className="text-2xl flex-shrink-0"
+                    <motion.div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: `${ach.badgeColor}18`, border: `1px solid ${ach.badgeColor}30` }}
                       animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.1, 1] }}
                       transition={{ duration: 3, repeat: Infinity, delay: i * 0.8 }}>
-                      {ach.badge}
-                    </motion.span>
+                      <BadgeIcon badge={ach.badge} color={ach.badgeColor} size={16} />
+                    </motion.div>
                   </div>
                   <p className="text-white/40 text-xs mt-2 line-clamp-2 leading-relaxed">{ach.description}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <span className="badge" style={{ background: `${ach.badgeColor}15`, color: ach.badgeColor, border: `1px solid ${ach.badgeColor}25` }}>{ach.category}</span>
-                    <span className="text-white/25 text-xs">❤️ {ach.likes}</span>
+                    <span className="text-white/25 text-xs">♥ {ach.likes}</span>
                   </div>
                 </div>
               </motion.div>
@@ -588,7 +847,7 @@ export default function Dashboard() {
                     <div className="flex items-center gap-2 mt-2">
                       <span className="badge" style={{ background: `${ann.categoryColor}15`, color: ann.categoryColor, border: `1px solid ${ann.categoryColor}20` }}>{ann.category}</span>
                       <span className="text-xs text-white/25">{format(parseISO(ann.date), 'MMM d')}</span>
-                      <span className="text-xs text-white/20 ml-auto">❤️ {ann.likes}</span>
+                      <span className="text-xs text-white/20 ml-auto">♥ {ann.likes}</span>
                     </div>
                   </div>
                 </div>
@@ -614,10 +873,10 @@ export default function Dashboard() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {[
-              upcoming.some(u => u.daysUntil === 0) && { icon: '🎂', color: '#ec4899', title: `${upcoming.find(u => u.daysUntil === 0)?.employeeName}'s Birthday Today!`, sub: 'Tap to send them wishes', link: '/celebrations' },
-              { icon: '📋', color: '#a78bfa', title: 'Explore Policies', sub: 'Stay informed on company policies', link: '/policies' },
-              { icon: '🎉', color: '#f59e0b', title: 'Fun Friday', sub: "See this week's fun activity", link: '/fun-friday' },
-              { icon: '📍', color: '#34d399', title: "Who's in the office today?", sub: '6 of 10 team members active', link: '/whos-in' },
+              upcoming.some(u => u.daysUntil === 0) && { Icon: Cake, color: '#ec4899', title: `${upcoming.find(u => u.daysUntil === 0)?.employeeName}'s Birthday Today!`, sub: 'Tap to send them wishes', link: '/celebrations' },
+              { Icon: BookMarked, color: '#a78bfa', title: 'Explore Policies', sub: 'Stay informed on company policies', link: '/policies' },
+              { Icon: Gamepad2, color: '#f59e0b', title: 'Fun Friday', sub: "See this week's fun activity", link: '/fun-friday' },
+              { Icon: MapPin, color: '#34d399', title: "Who's in the office today?", sub: '6 of 10 team members active', link: '/whos-in' },
             ].filter(Boolean).slice(0, 4).map((item, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
@@ -627,7 +886,10 @@ export default function Dashboard() {
                   style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.transform = 'translateX(3px)'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; e.currentTarget.style.transform = ''; }}>
-                  <span className="text-xl flex-shrink-0">{item.icon}</span>
+                  <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: `${item.color}18`, border: `1px solid ${item.color}30` }}>
+                    <item.Icon size={15} style={{ color: item.color }} />
+                  </div>
                   <div className="min-w-0">
                     <p className="text-white/80 text-sm font-semibold leading-tight">{item.title}</p>
                     <p className="text-white/35 text-xs mt-0.5">{item.sub}</p>
@@ -676,7 +938,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <p className="text-white/60 text-sm font-semibold mt-3">
-                  {pulse.score >= 80 ? '🚀 Team is thriving!' : pulse.score >= 60 ? '😊 Feeling good' : '😐 Mixed signals'}
+                  {pulse.score >= 80 ? 'Team is thriving!' : pulse.score >= 60 ? 'Feeling good' : 'Mixed signals'}
                 </p>
                 <p className="text-white/30 text-xs mt-1">{pulse.total} check-ins today</p>
               </div>
@@ -711,7 +973,7 @@ export default function Dashboard() {
                 <Avatar photo={item.photo} initials={item.avatar} color={item.coverColor} size="sm" shape="circle" />
                 <div className="flex-1 min-w-0">
                   <p className="text-white/80 text-sm font-semibold truncate">{item.employeeName}</p>
-                  <p className="text-white/35 text-xs">{item.type === 'birthday' ? '🎂 Birthday' : `🎊 ${item.years}yr Anniversary`}</p>
+                  <p className="text-white/35 text-xs">{item.type === 'birthday' ? 'Birthday' : `${item.years}yr Anniversary`}</p>
                 </div>
                 <DaysChip days={item.daysUntil} />
               </motion.div>
@@ -743,7 +1005,9 @@ export default function Dashboard() {
                     </p>
                     <p className="text-white/45 text-xs leading-relaxed line-clamp-2 italic">"{kudo.message}"</p>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: `${kudo.badgeColor}15`, color: kudo.badgeColor }}>{kudo.badge}</span>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1" style={{ background: `${kudo.badgeColor}15`, color: kudo.badgeColor }}>
+                        <BadgeIcon badge={kudo.badge} color={kudo.badgeColor} size={10} /> {kudo.badge}
+                      </span>
                       <span className="text-white/20 text-xs opacity-0 group-hover:opacity-100 transition-opacity">Tap to read →</span>
                     </div>
                   </div>
@@ -757,6 +1021,11 @@ export default function Dashboard() {
       {/* Kudo Modal */}
       <AnimatePresence>
         {selectedKudo && <KudoModal kudo={selectedKudo} onClose={() => setSelectedKudo(null)} />}
+      </AnimatePresence>
+
+      {/* My Journey Modal */}
+      <AnimatePresence>
+        {showJourney && <MyJourneyModal user={user} onClose={() => setShowJourney(false)} />}
       </AnimatePresence>
     </motion.div>
   );

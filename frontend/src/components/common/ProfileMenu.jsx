@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import {
-  User, Trophy, Heart, CalendarCheck, Settings,
-  LogOut, ChevronRight, Star, Zap, Shield,
-  Bell, Copy, Check, X, Lock, Eye, EyeOff,
-  AlertTriangle, Megaphone
+  User, Settings, Flame,
+  LogOut, ChevronRight, Zap, Shield,
+  Copy, Check, X, Lock,
+  AlertTriangle
 } from 'lucide-react';
 import Avatar from './Avatar';
 import toast from 'react-hot-toast';
@@ -16,7 +16,7 @@ const STATS = [
   { label: 'Points', value: '1,250', color: '#818cf8' },
   { label: 'Awards', value: '2',     color: '#fbbf24' },
   { label: 'Kudos',  value: '3',     color: '#f472b6' },
-  { label: 'Streak', value: '5d 🔥', color: '#fb923c' },
+  { label: 'Streak', value: '5d',    color: '#fb923c', icon: Flame },
 ];
 
 /* ── Settings Modal ────────────────────────────────────────── */
@@ -24,7 +24,6 @@ function SettingsModal({ onClose }) {
   const [notifEmail, setNotifEmail] = useState(true);
   const [notifPush, setNotifPush] = useState(true);
   const [notifKudos, setNotifKudos] = useState(true);
-  const [theme, setTheme] = useState('dark');
 
   const Toggle = ({ value, onChange, label, sub }) => (
     <div className="flex items-center justify-between py-2.5">
@@ -68,18 +67,6 @@ function SettingsModal({ onClose }) {
             <Toggle value={notifPush} onChange={setNotifPush} label="In-App Notifications" sub="Badges and alert banners" />
           </div>
           <Toggle value={notifKudos} onChange={setNotifKudos} label="Kudos Alerts" sub="When someone recognizes you" />
-
-          <p className="text-white/30 text-[10px] font-black uppercase tracking-widest py-2 pt-4">Appearance</p>
-          <div className="flex gap-2 pb-2">
-            {['dark', 'darker', 'midnight'].map(t => (
-              <button key={t} onClick={() => setTheme(t)}
-                className="flex-1 py-2 rounded-xl text-xs font-semibold capitalize transition-all"
-                style={theme === t
-                  ? { background: 'rgba(99,102,241,0.2)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.35)' }
-                  : { background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.07)' }
-                }>{t}</button>
-            ))}
-          </div>
         </div>
 
         <div className="px-5 py-4 border-t border-white/5 flex gap-2">
@@ -302,7 +289,7 @@ export default function ProfileMenu({ anchor = 'top' }) {
         break;
       case 'notifications':
         navigate('/announcements');
-        toast('Opening announcements & notifications…', { icon: '🔔' });
+        toast('Opening announcements & notifications…');
         break;
       case 'privacy':
         setTimeout(() => setShowPrivacy(true), 100);
@@ -322,18 +309,14 @@ export default function ProfileMenu({ anchor = 'top' }) {
     {
       group: 'My Space',
       items: [
-        { icon: User,          label: 'My Profile',      sub: 'View your profile card',       color: '#6366f1', action: 'my-profile' },
-        { icon: Trophy,        label: 'My Achievements', sub: '2 awards earned',              color: '#f59e0b', action: 'my-achievements' },
-        { icon: Heart,         label: 'Kudos Received',  sub: '3 kudos this month',           color: '#ec4899', action: 'my-kudos' },
-        { icon: CalendarCheck, label: 'My Leaves',       sub: '15 days remaining',            color: '#10b981', action: 'my-leaves' },
+        { icon: User, label: 'My Profile', sub: 'View your profile card', color: '#6366f1', action: 'my-profile' },
         ...(u.isAdmin ? [{ icon: Shield, label: 'HR Admin Portal', sub: 'Manage HR operations', color: '#f97316', action: 'admin' }] : []),
       ],
     },
     {
       group: 'Preferences',
       items: [
-        { icon: Bell,   label: 'Notifications', sub: '5 unread alerts',  color: '#3b82f6', action: 'notifications' },
-        { icon: Shield, label: 'Privacy',       sub: 'Manage your data', color: '#8b5cf6', action: 'privacy' },
+        { icon: Shield, label: 'Privacy', sub: 'Manage your data', color: '#8b5cf6', action: 'privacy' },
       ],
     },
   ];
@@ -368,9 +351,11 @@ export default function ProfileMenu({ anchor = 'top' }) {
           </div>
         {/* Stats */}
         <div className="grid grid-cols-4 gap-2 mt-4 pt-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          {STATS.map(({ label, value, color }) => (
+          {STATS.map(({ label, value, color, icon: Icon }) => (
             <div key={label} className="flex flex-col items-center gap-0.5">
-              <p className="font-black text-sm" style={{ color }}>{value}</p>
+              <p className="font-black text-sm flex items-center gap-0.5" style={{ color }}>
+                {value}{Icon && <Icon size={11} className="fill-current" />}
+              </p>
               <p className="text-white/25 text-[10px]">{label}</p>
             </div>
           ))}

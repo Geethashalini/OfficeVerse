@@ -18,6 +18,8 @@ export const employeesAPI = {
   getById: (id) => api.get(`/employees/${id}`),
   getDepartments: () => api.get('/employees/departments'),
   update: (id, data) => api.put(`/employees/${id}`, data),
+  add: (data) => api.post('/employees', data),
+  remove: (id) => api.delete(`/employees/${id}`),
 };
 
 export const achievementsAPI = {

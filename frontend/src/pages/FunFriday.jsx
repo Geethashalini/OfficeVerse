@@ -95,7 +95,7 @@ function SuggestGameForm({ user, onSuccess }) {
   return (
     <div className="glass-card overflow-hidden"
       style={{ border: '1px solid rgba(99,102,241,0.25)', boxShadow: '0 8px 40px rgba(99,102,241,0.1)' }}>
-      <div className="px-6 py-4 flex items-center gap-3"
+      <div className="px-6 py-5 flex items-center gap-3"
         style={{ background: 'linear-gradient(90deg, rgba(99,102,241,0.15), transparent)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
           style={{ background: 'rgba(99,102,241,0.2)', border: '1px solid rgba(99,102,241,0.3)' }}>
@@ -806,7 +806,7 @@ export default function FunFriday() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="mt-2 grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-5">
                 <AnimatePresence mode="wait">
                   {activeTab==='vote' && activePoll && (

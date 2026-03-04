@@ -1,8 +1,19 @@
 import { useState, useEffect } from 'react';
-import { Trophy, Heart, Star, Award, Sparkles, Filter, X } from 'lucide-react';
+import { Trophy, Heart, Star, Award, Sparkles, Filter, X, Zap, Activity, TrendingUp, CheckCircle } from 'lucide-react';
 import Avatar from '../components/common/Avatar';
 import { achievementsAPI } from '../services/api';
 import { useLocation } from 'react-router-dom';
+
+const BADGE_ICON_MAP = {
+  'Trophy': Trophy, 'Star': Star, 'Sparkles': Sparkles, 'Award': Award,
+  'Rocket': Zap, 'Diamond': Star, 'Heart': Heart, 'Shield': CheckCircle,
+  'Hero': CheckCircle, 'Innovator': Zap, 'Insights': Activity,
+  'Culture': Heart, 'Impact': TrendingUp, 'Rising Star': Star, 'Mentor': Sparkles,
+};
+function BadgeIcon({ badge, color, size = 14 }) {
+  const Icon = BADGE_ICON_MAP[badge] || Star;
+  return <Icon size={size} style={{ color }} />;
+}
 import PageLoader from '../components/common/PageLoader';
 import { format, parseISO } from 'date-fns';
 import toast from 'react-hot-toast';
@@ -69,7 +80,10 @@ function AchievementCard({ ach, index }) {
         <div className="flex items-start gap-4 mb-4">
           <div className="relative flex-shrink-0">
             <Avatar photo={ach.photo} initials={ach.avatar} color={ach.coverColor} size="lg" />
-            <span className="absolute -bottom-2 -right-2 text-2xl drop-shadow-lg">{ach.badge}</span>
+            <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl flex items-center justify-center drop-shadow-lg"
+              style={{ background: `${ach.badgeColor}20`, border: `1px solid ${ach.badgeColor}40` }}>
+              <BadgeIcon badge={ach.badge} color={ach.badgeColor} size={14} />
+            </div>
           </div>
           <div className="flex-1 min-w-0 pt-1">
             <h3 className="text-white font-black text-sm leading-snug line-clamp-2 group-hover:text-white transition-colors">

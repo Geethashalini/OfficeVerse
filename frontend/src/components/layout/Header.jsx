@@ -4,7 +4,8 @@ import {
   Menu, Search, Sparkles, Command,
   LayoutDashboard, Trophy, PartyPopper, Megaphone,
   BookOpen, Heart, Users, CalendarCheck,
-  MessageSquare, BarChart3, Activity, MapPin, Briefcase, Map, Bot, Shield, Gamepad2
+  MessageSquare, BarChart3, Activity, MapPin, Briefcase, Map, Bot, Shield, Gamepad2,
+  Sun, Moon
 } from 'lucide-react';
 import Avatar from '../common/Avatar';
 import NotificationCenter from '../common/NotificationCenter';
@@ -115,7 +116,7 @@ export default function Header({ onMenuToggle }) {
                 background: isDark ? 'rgba(99,102,241,0.12)' : 'rgba(245,158,11,0.12)',
                 border: isDark ? '1px solid rgba(99,102,241,0.2)' : '1px solid rgba(245,158,11,0.25)',
               }}>
-              <span style={{ fontSize: 16 }}>{isDark ? '☀️' : '🌙'}</span>
+              <span style={{ fontSize: 16 }}>{isDark ? <Sun size={16} style={{ color: '#fbbf24' }} /> : <Moon size={16} style={{ color: '#818cf8' }} />}</span>
             </button>
 
             {/* Points chip */}

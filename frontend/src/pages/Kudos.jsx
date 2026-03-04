@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Heart, Plus, X, Send, Trophy, Sparkles, Crown } from 'lucide-react';
+import { Heart, Plus, X, Send, Trophy, Sparkles, Crown, Shield, Rocket, Star, Lightbulb, Target, Zap, Medal, Activity, TrendingUp, CheckCircle, Award } from 'lucide-react';
 import Avatar from '../components/common/Avatar';
 import PageLoader from '../components/common/PageLoader';
 import { kudosAPI, employeesAPI } from '../services/api';
@@ -7,15 +7,26 @@ import { useLocation } from 'react-router-dom';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import toast from 'react-hot-toast';
 
+const BADGE_ICON_MAP = {
+  'Trophy': Trophy, 'Star': Star, 'Sparkles': Sparkles, 'Award': Award,
+  'Rocket': Zap, 'Diamond': Star, 'Heart': Heart, 'Shield': CheckCircle,
+  'Hero': CheckCircle, 'Innovator': Zap, 'Insights': Activity,
+  'Culture': Heart, 'Impact': TrendingUp, 'Rising Star': Star, 'Mentor': Sparkles,
+};
+function BadgeIcon({ badge, color, size = 14 }) {
+  const Icon = BADGE_ICON_MAP[badge] || Star;
+  return <Icon size={size} style={{ color }} />;
+}
+
 const BADGES = [
-  { label: '🦸 Hero',        value: '🦸 Hero',        color: '#f59e0b' },
-  { label: '🚀 Innovator',   value: '🚀 Innovator',   color: '#6366f1' },
-  { label: '⭐ Star',         value: '⭐ Star',         color: '#ec4899' },
-  { label: '🌟 Mentor',      value: '🌟 Mentor',      color: '#8b5cf6' },
-  { label: '💡 Insights',    value: '💡 Insights',    color: '#10b981' },
-  { label: '❤️ Culture',     value: '❤️ Culture',     color: '#ef4444' },
-  { label: '🎯 Impact',      value: '🎯 Impact',       color: '#a855f7' },
-  { label: '⚡ Rising Star', value: '⚡ Rising Star',  color: '#fbbf24' },
+  { label: 'Hero',        value: 'Hero',        color: '#f59e0b', Icon: Shield  },
+  { label: 'Innovator',   value: 'Innovator',   color: '#6366f1', Icon: Rocket  },
+  { label: 'Star',        value: 'Star',        color: '#ec4899', Icon: Star    },
+  { label: 'Mentor',      value: 'Mentor',      color: '#8b5cf6', Icon: Sparkles},
+  { label: 'Insights',    value: 'Insights',    color: '#10b981', Icon: Lightbulb},
+  { label: 'Culture',     value: 'Culture',     color: '#ef4444', Icon: Heart   },
+  { label: 'Impact',      value: 'Impact',      color: '#a855f7', Icon: Target  },
+  { label: 'Rising Star', value: 'Rising Star', color: '#fbbf24', Icon: Zap     },
 ];
 const CATEGORIES = ['Problem Solving','Innovation','Excellence','Business Impact','Culture Building','Mentorship','Growth','Teamwork'];
 
@@ -54,9 +65,9 @@ function KudoCard({ kudo, index }) {
             <p className="text-white/25 text-xs">{formatDistanceToNow(parseISO(kudo.date), { addSuffix: true })}</p>
           </div>
         </div>
-        <span className="badge flex-shrink-0 text-xs font-bold px-3 py-1"
+        <span className="badge flex-shrink-0 text-xs font-bold px-3 py-1 flex items-center gap-1.5"
           style={{ background: `${kudo.badgeColor}18`, color: kudo.badgeColor, border: `1px solid ${kudo.badgeColor}30` }}>
-          {kudo.badge}
+          <BadgeIcon badge={kudo.badge} color={kudo.badgeColor} size={11} /> {kudo.badge}
         </span>
       </div>
 
@@ -133,13 +144,13 @@ function GiveKudosModal({ employees, onClose, onSubmit }) {
               {BADGES.map(badge => (
                 <button key={badge.value} type="button"
                   onClick={() => setForm(f => ({ ...f, badge: badge.value, badgeColor: badge.color }))}
-                  className="px-3 py-2 rounded-xl text-sm font-semibold text-left transition-all duration-200"
+                  className="px-3 py-2 rounded-xl text-sm font-semibold text-left transition-all duration-200 flex items-center gap-2"
                   style={form.badge === badge.value
                     ? { background: `${badge.color}20`, border: `1px solid ${badge.color}40`, color: badge.color }
                     : { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', color: 'rgba(255,255,255,0.5)' }
                   }
                 >
-                  {badge.label}
+                  <badge.Icon size={13} /> {badge.label}
                 </button>
               ))}
             </div>
@@ -228,12 +239,16 @@ export default function Kudos() {
 
   const handleSubmit = async (data) => {
     await kudosAPI.create(data);
-    toast.success('🎉 Kudos sent!');
+    toast.success('Kudos sent!');
     setShowModal(false);
     fetchData();
   };
 
-  const medals = ['🥇','🥈','🥉'];
+  const medals = [
+    <Trophy size={16} style={{ color: '#fbbf24' }} />,
+    <Medal  size={16} style={{ color: '#d1d5db' }} />,
+    <Medal  size={16} style={{ color: '#f97316' }} />,
+  ];
 
   return (
     <div className="space-y-7 animate-fade-in">
@@ -249,7 +264,7 @@ export default function Kudos() {
             </span>
           </h1>
           <p className="text-white/35 text-sm mt-2 ml-14">
-          {filterTo ? '❤️ Kudos received by Arjun Sharma' : 'Spread appreciation. Recognize greatness.'}
+          {filterTo ? 'Kudos received by Arjun Sharma' : 'Spread appreciation. Recognize greatness.'}
         </p>
         </div>
         <button onClick={() => setShowModal(true)} className="btn-primary">
@@ -285,7 +300,7 @@ export default function Kudos() {
                     : { background: 'rgba(255,255,255,0.025)' }
                   }
                 >
-                  <span className="text-lg w-7 text-center flex-shrink-0">{medals[idx] || `${idx+1}`}</span>
+                  <span className="text-lg w-7 text-center flex-shrink-0 flex items-center justify-center">{medals[idx] || <span className="text-white/30 text-sm font-bold">{idx+1}</span>}</span>
                   <Avatar photo={person.photo} initials={person.avatar} color={person.color} size="sm" shape="circle" />
                   <div className="flex-1 min-w-0">
                     <p className="text-white/80 text-sm font-semibold truncate">{person.name}</p>

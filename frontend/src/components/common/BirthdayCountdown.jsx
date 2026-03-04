@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, BellOff, Heart, Send, X, MessageCircle, Cake } from 'lucide-react';
+import { Bell, BellOff, Heart, Send, X, MessageCircle, Cake, Sparkles, Star, Zap, Clock, Flame } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { employeesAPI } from '../../services/api';
 import toast from 'react-hot-toast';
@@ -175,14 +175,14 @@ function DigitBlock({ value, label, color }) {
    Teammate Wishes Modal — shown when user clicks "See Wishes"
 ───────────────────────────────────────────────────────────── */
 const WISH_MESSAGES = [
-  "Wishing you all the happiness in the world today! 🎂",
-  "Happy Birthday! May this year bring you tons of joy and success! 🚀",
-  "Hope your day is as wonderful as you are! 🌟",
-  "Cheers to another year of awesomeness! 🥂",
-  "Sending you the warmest birthday wishes! 🎉",
-  "May all your dreams come true this year! ✨",
-  "You're a rockstar — happy birthday! 🎸",
-  "Another year wiser, stronger, and more amazing! 💪",
+  "Wishing you all the happiness in the world today!",
+  "Happy Birthday! May this year bring you tons of joy and success!",
+  "Hope your day is as wonderful as you are!",
+  "Cheers to another year of awesomeness!",
+  "Sending you the warmest birthday wishes!",
+  "May all your dreams come true this year!",
+  "You're a rockstar — happy birthday!",
+  "Another year wiser, stronger, and more amazing!",
 ];
 
 function WishesModal({ user, onClose, fire }) {
@@ -283,14 +283,14 @@ function WishesModal({ user, onClose, fire }) {
                   style={{ border: '3px solid rgba(236,72,153,0.6)', boxShadow: '0 0 30px rgba(236,72,153,0.35), 0 8px 24px rgba(0,0,0,0.5)' }}>
                   <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
                 </div>
-                {/* Floating star decorations */}
-                {['✨','🌟','⭐'].map((s, i) => (
-                  <motion.span key={i} className="absolute text-sm pointer-events-none"
-                    style={{ top: `${-8 + i * 12}px`, right: `${-10 + i * 5}px` }}
+                {/* Floating decorations */}
+                {[{ color: '#f472b6', delay: 0 }, { color: '#fbbf24', delay: 0.4 }, { color: '#a5b4fc', delay: 0.8 }].map((d, i) => (
+                  <motion.div key={i} className="absolute pointer-events-none"
+                    style={{ top: `${-6 + i * 10}px`, right: `${-10 + i * 4}px` }}
                     animate={{ y: [0, -5, 0], opacity: [0.7, 1, 0.7] }}
-                    transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.4 }}>
-                    {s}
-                  </motion.span>
+                    transition={{ duration: 1.8, repeat: Infinity, delay: d.delay }}>
+                    <Star size={10} style={{ color: d.color }} className="fill-current" />
+                  </motion.div>
                 ))}
               </motion.div>
             </div>
@@ -312,7 +312,7 @@ function WishesModal({ user, onClose, fire }) {
             className="text-white/35 text-xs mt-2"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
           >
-            Your team celebrates you today — wishing you an amazing year ahead! 🥳
+            Your team celebrates you today — wishing you an amazing year ahead!
           </motion.p>
         </div>
 
@@ -429,19 +429,19 @@ function BirthdayModeCard({ user, fire }) {
           boxShadow:  '0 0 50px rgba(236,72,153,0.25), 0 0 80px rgba(99,102,241,0.1)',
         }}
       >
-        {/* Animated floating stars — spread across full width */}
+        {/* Floating decorative icons spread across card */}
         {[
-          { s: '✨', top: '10%',  left: '3%'  },
-          { s: '🌟', top: '65%',  left: '12%' },
-          { s: '⭐', top: '15%',  left: '84%' },
-          { s: '💫', top: '72%',  left: '92%' },
-        ].map(({ s, top, left }, i) => (
-          <motion.span key={i} className="absolute text-base pointer-events-none"
+          { color: '#f472b6', top: '10%',  left: '3%',  delay: 0    },
+          { color: '#fbbf24', top: '65%',  left: '12%', delay: 0.4  },
+          { color: '#a5b4fc', top: '15%',  left: '84%', delay: 0.8  },
+          { color: '#34d399', top: '72%',  left: '92%', delay: 1.2  },
+        ].map(({ color, top, left, delay }, i) => (
+          <motion.div key={i} className="absolute pointer-events-none"
             style={{ top, left }}
-            animate={{ y: [0, -10, 0], opacity: [0.3, 0.8, 0.3], rotate: [0, 15, -15, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.4, ease: 'easeInOut' }}>
-            {s}
-          </motion.span>
+            animate={{ y: [0, -10, 0], opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 2.5, repeat: Infinity, delay, ease: 'easeInOut' }}>
+            <Sparkles size={14} style={{ color }} />
+          </motion.div>
         ))}
 
         {/* Main horizontal layout */}
@@ -458,13 +458,13 @@ function BirthdayModeCard({ user, fire }) {
                 style={{ border: '3px solid rgba(236,72,153,0.7)', boxShadow: '0 0 32px rgba(236,72,153,0.4), 0 8px 24px rgba(0,0,0,0.5)' }}>
                 <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
               </div>
-              {['✨','🌟'].map((s, i) => (
-                <motion.span key={i} className="absolute text-sm pointer-events-none"
+              {[{ color: '#f472b6', delay: 0 }, { color: '#fbbf24', delay: 0.5 }].map((d, i) => (
+                <motion.div key={i} className="absolute pointer-events-none"
                   style={{ top: `${-6 + i * 10}px`, right: `${-10 + i * 4}px` }}
                   animate={{ y: [0, -6, 0], opacity: [0.7, 1, 0.7] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}>
-                  {s}
-                </motion.span>
+                  transition={{ duration: 2, repeat: Infinity, delay: d.delay }}>
+                  <Star size={10} style={{ color: d.color }} className="fill-current" />
+                </motion.div>
               ))}
             </motion.div>
           )}
@@ -484,7 +484,7 @@ function BirthdayModeCard({ user, fire }) {
             </motion.h3>
 
             <p className="text-white/45 text-xs italic mb-4">
-              "Wishing you many more happy returns of the day!" 🎊
+              "Wishing you many more happy returns of the day!"
             </p>
 
             <motion.button
@@ -494,7 +494,7 @@ function BirthdayModeCard({ user, fire }) {
               style={{ background: 'linear-gradient(135deg, #ec4899, #f59e0b)', boxShadow: '0 6px 20px rgba(236,72,153,0.5)' }}
             >
               <MessageCircle size={15} />
-              See Wishes 🎊
+              See Wishes
             </motion.button>
           </div>
 
@@ -590,8 +590,8 @@ export default function BirthdayCountdownCard({ user }) {
   const handleNotify = () => {
     setNotifyTeam(n => !n);
     toast(!notifyTeam
-      ? '🔔 Team will be notified on your birthday!'
-      : '🔕 Team notification cancelled.'
+      ? 'Team will be notified on your birthday!'
+      : 'Team notification cancelled.'
     );
   };
 
@@ -676,9 +676,9 @@ export default function BirthdayCountdownCard({ user }) {
             style={{ background: `${accentColor}20`, color: accentColor, border: `1px solid ${accentColor}35` }}
             animate={{ scale: isWithin10min ? [1, 1.08, 1] : [1] }}
             transition={{ duration: 1.2, repeat: Infinity }}>
-            {isWithin5min  ? '🔥 Almost!' :
-             isWithin10min ? '⚡ Very Soon!' :
-             isWithin1h    ? '⏰ < 1 Hour' :
+            {isWithin5min  ? 'Almost!' :
+             isWithin10min ? 'Very Soon!' :
+             isWithin1h    ? '< 1 Hour' :
                              `< 24 Hours`}
           </motion.span>
         </div>

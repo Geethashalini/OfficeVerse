@@ -50,4 +50,28 @@ router.put('/:id', (req, res) => {
   res.json(employees[idx]);
 });
 
+router.post('/', (req, res) => {
+  const employees = readData();
+  const newEmployee = {
+    id: `emp${String(Date.now()).slice(-6)}`,
+    status: 'active',
+    points: 0,
+    yearsAtCompany: 0,
+    achievements: [],
+    skills: req.body.skills || [],
+    ...req.body,
+  };
+  employees.push(newEmployee);
+  writeData(employees);
+  res.status(201).json(newEmployee);
+});
+
+router.delete('/:id', (req, res) => {
+  const employees = readData();
+  const filtered = employees.filter(e => e.id !== req.params.id);
+  if (filtered.length === employees.length) return res.status(404).json({ error: 'Employee not found' });
+  writeData(filtered);
+  res.json({ success: true });
+});
+
 module.exports = router;

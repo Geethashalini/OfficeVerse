@@ -1,16 +1,50 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, Users, Trophy, BookOpen, Megaphone, Heart, ArrowRight, Clock, Zap, Command } from 'lucide-react';
+import {
+  Search, X, Users, Trophy, BookOpen, Megaphone, Heart, ArrowRight, Clock, Zap, Command,
+  LayoutDashboard, PartyPopper, CalendarCheck, MessageSquare, BarChart3,
+  Activity, MapPin, Briefcase, Map, Bot, Shield, Gamepad2,
+  Star, Sparkles, Award, TrendingUp, CheckCircle
+} from 'lucide-react';
 import { employeesAPI, achievementsAPI, policiesAPI, announcementsAPI, kudosAPI } from '../../services/api';
 import Avatar from './Avatar';
 
+const BADGE_ICON_MAP = {
+  'Trophy': Trophy, 'Star': Star, 'Sparkles': Sparkles, 'Award': Award,
+  'Rocket': Zap, 'Diamond': Star, 'Heart': Heart, 'Shield': CheckCircle,
+  'Hero': CheckCircle, 'Innovator': Zap, 'Insights': Activity,
+  'Culture': Heart, 'Impact': TrendingUp, 'Rising Star': Star, 'Mentor': Sparkles,
+};
+
+/* ── Page / module quick-launch entries ────────────────────── */
+const PAGE_ITEMS = [
+  { id: 'p-dashboard',     type: 'pages', title: 'Dashboard',          sub: 'Your workspace overview',              icon: LayoutDashboard, color: '#6366f1', link: '/' },
+  { id: 'p-spotlight',     type: 'pages', title: 'Employee Spotlight',  sub: 'Achievements & recognition',           icon: Trophy,          color: '#f59e0b', link: '/spotlight' },
+  { id: 'p-celebrations',  type: 'pages', title: 'Celebrations',        sub: 'Birthdays & anniversaries',            icon: PartyPopper,     color: '#ec4899', link: '/celebrations' },
+  { id: 'p-announcements', type: 'pages', title: 'Announcements',       sub: 'Company-wide updates',                 icon: Megaphone,       color: '#3b82f6', link: '/announcements' },
+  { id: 'p-policies',      type: 'pages', title: 'Policy Hub',          sub: 'Company policies & documents',         icon: BookOpen,        color: '#8b5cf6', link: '/policies' },
+  { id: 'p-kudos',         type: 'pages', title: 'Kudos Wall',          sub: 'Spread appreciation',                  icon: Heart,           color: '#f43f5e', link: '/kudos' },
+  { id: 'p-give-kudos',    type: 'pages', title: 'Give Kudos',          sub: 'Recognize a teammate now',             icon: Heart,           color: '#ec4899', link: '/kudos', state: { openModal: true } },
+  { id: 'p-directory',     type: 'pages', title: 'Directory',           sub: 'Find & connect with colleagues',       icon: Users,           color: '#06b6d4', link: '/directory' },
+  { id: 'p-leaves',        type: 'pages', title: 'Leave Tracker',       sub: 'Manage your time-off',                 icon: CalendarCheck,   color: '#10b981', link: '/leaves' },
+  { id: 'p-feedback',      type: 'pages', title: 'Feedback',            sub: 'Share your thoughts',                  icon: MessageSquare,   color: '#a78bfa', link: '/feedback' },
+  { id: 'p-analytics',     type: 'pages', title: 'Analytics',           sub: 'Culture & engagement metrics',         icon: BarChart3,       color: '#34d399', link: '/analytics' },
+  { id: 'p-pulse',         type: 'pages', title: 'Team Pulse',          sub: 'Check in your mood',                   icon: Activity,        color: '#818cf8', link: '/pulse' },
+  { id: 'p-whos-in',       type: 'pages', title: "Who's In?",           sub: 'Live office attendance',               icon: MapPin,          color: '#10b981', link: '/whos-in' },
+  { id: 'p-projects',      type: 'pages', title: 'Projects & Teams',    sub: 'See who is working on what',           icon: Briefcase,       color: '#a78bfa', link: '/projects' },
+  { id: 'p-fun-friday',    type: 'pages', title: 'Fun Friday',          sub: 'Vote for games & fun activities',      icon: Gamepad2,        color: '#ec4899', link: '/fun-friday' },
+  { id: 'p-journey',       type: 'pages', title: 'Employee Journey',    sub: 'Your career story',                    icon: Map,             color: '#f472b6', link: '/journey' },
+  { id: 'p-ask-hr',        type: 'pages', title: 'Ask HR',              sub: 'AI-powered HR assistant',              icon: Bot,             color: '#34d399', link: '/ask-hr' },
+];
+
 /* ── Category config ───────────────────────────────────────── */
 const CATEGORIES = {
-  employees:     { label: 'People',         icon: Users,     color: '#06b6d4', route: e => `/directory` },
-  achievements:  { label: 'Achievements',   icon: Trophy,    color: '#f59e0b', route: e => `/spotlight` },
-  policies:      { label: 'Policies',       icon: BookOpen,  color: '#8b5cf6', route: e => `/policies`  },
-  announcements: { label: 'Announcements',  icon: Megaphone, color: '#3b82f6', route: e => `/announcements` },
-  kudos:         { label: 'Kudos',          icon: Heart,     color: '#ec4899', route: e => `/kudos`     },
+  pages:         { label: 'Pages',         icon: Zap,       color: '#818cf8', route: () => '/' },
+  employees:     { label: 'People',         icon: Users,     color: '#06b6d4', route: () => '/directory' },
+  achievements:  { label: 'Achievements',   icon: Trophy,    color: '#f59e0b', route: () => '/spotlight' },
+  policies:      { label: 'Policies',       icon: BookOpen,  color: '#8b5cf6', route: () => '/policies'  },
+  announcements: { label: 'Announcements',  icon: Megaphone, color: '#3b82f6', route: () => '/announcements' },
+  kudos:         { label: 'Kudos',          icon: Heart,     color: '#ec4899', route: () => '/kudos'     },
 };
 
 const RECENTS_KEY = 'globalSearchRecents';
@@ -48,11 +82,16 @@ function ResultItem({ item, active, onSelect }) {
       {/* Icon / Avatar */}
       {item.type === 'employees' ? (
         <Avatar photo={item.photo} initials={item.avatar} color={item.coverColor} size="sm" shape="circle" />
+      ) : item.type === 'pages' ? (
+        <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: `${cat.color}15`, border: `1px solid ${cat.color}25` }}>
+          {item.icon && <item.icon size={14} style={{ color: cat.color }} />}
+        </div>
       ) : (
         <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{ background: `${cat.color}15`, border: `1px solid ${cat.color}20` }}>
-          {item.emoji
-            ? <span className="text-base">{item.emoji}</span>
+          {item.badgeKey
+            ? (() => { const I = BADGE_ICON_MAP[item.badgeKey] || Star; return <I size={14} style={{ color: item.badgeColor || cat.color }} />; })()
             : <cat.icon size={14} style={{ color: cat.color }} />
           }
         </div>
@@ -118,6 +157,13 @@ export default function GlobalSearch({ open, onClose }) {
     const timeout = setTimeout(async () => {
       try {
         const q = query.trim();
+        const lower = q.toLowerCase();
+
+        // Pages / modules — fuzzy match on title + sub
+        const pageResults = PAGE_ITEMS.filter(p =>
+          p.title.toLowerCase().includes(lower) || p.sub.toLowerCase().includes(lower)
+        ).slice(0, 5);
+
         const [emps, achs, pols, annos, kud] = await Promise.allSettled([
           employeesAPI.getAll({ search: q }),
           achievementsAPI.getAll(),
@@ -125,8 +171,6 @@ export default function GlobalSearch({ open, onClose }) {
           announcementsAPI.getAll(),
           kudosAPI.getAll(),
         ]);
-
-        const lower = q.toLowerCase();
 
         const empResults = (emps.value || []).slice(0, 4).map(e => ({
           id: e.id, type: 'employees',
@@ -140,7 +184,7 @@ export default function GlobalSearch({ open, onClose }) {
           .slice(0, 3).map(a => ({
             id: a.id, type: 'achievements',
             title: a.title, sub: `${a.employeeName} · ${a.category}`,
-            emoji: a.badge, link: '/spotlight',
+            badgeKey: a.badge, badgeColor: a.badgeColor, link: '/spotlight',
           }));
 
         const polResults = (pols.value || []).slice(0, 3).map(p => ({
@@ -167,11 +211,12 @@ export default function GlobalSearch({ open, onClose }) {
           }));
 
         const newResults = {};
-        if (empResults.length)  newResults.employees     = empResults;
-        if (achResults.length)  newResults.achievements  = achResults;
-        if (polResults.length)  newResults.policies      = polResults;
-        if (annoResults.length) newResults.announcements = annoResults;
-        if (kudoResults.length) newResults.kudos         = kudoResults;
+        if (pageResults.length)  newResults.pages         = pageResults;
+        if (empResults.length)   newResults.employees     = empResults;
+        if (achResults.length)   newResults.achievements  = achResults;
+        if (polResults.length)   newResults.policies      = polResults;
+        if (annoResults.length)  newResults.announcements = annoResults;
+        if (kudoResults.length)  newResults.kudos         = kudoResults;
 
         setResults(newResults);
         setActiveIdx(0);
@@ -188,7 +233,7 @@ export default function GlobalSearch({ open, onClose }) {
 
   const handleSelect = (item) => {
     saveRecent(item);
-    navigate(item.link);
+    navigate(item.link, item.state ? { state: item.state } : undefined);
     onClose();
   };
 
@@ -249,7 +294,7 @@ export default function GlobalSearch({ open, onClose }) {
               <p className="text-white/50 font-semibold mb-1">Search everything</p>
               <p className="text-white/25 text-sm">People · Policies · Announcements · Kudos · Achievements</p>
               <div className="flex flex-wrap gap-2 mt-5 justify-center">
-                {['Arjun', 'Leave Policy', 'Town Hall', 'Innovation'].map(hint => (
+                {['Kudos', 'Leave Policy', 'Pulse', 'Fun Friday', 'Arjun'].map(hint => (
                   <button key={hint} onClick={() => setQuery(hint)}
                     className="px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
                     style={{ background: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.45)', border: '1px solid rgba(255,255,255,0.08)' }}

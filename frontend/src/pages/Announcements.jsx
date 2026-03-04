@@ -90,7 +90,7 @@ function AnnouncementCard({ announcement, onLike }) {
           {announcement.content}
         </p>
 
-        {announcement.content.length > 200 && (
+        {announcement.content.length > 600 && (
           <button
             onClick={() => setExpanded(!expanded)}
             className="text-primary-400 text-sm hover:text-primary-300 mt-2 transition-colors"
