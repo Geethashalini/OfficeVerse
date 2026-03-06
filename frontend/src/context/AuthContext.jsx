@@ -15,7 +15,7 @@ const MOCK_USERS = [
     photo: 'https://randomuser.me/api/portraits/men/32.jpg',
     color: '#6366f1',
     points: 1250,
-    birthday: '1993-03-05',
+    birthday: '1993-03-06',
     keycloakRoles: ['employee', 'developer'],
   },
   {
